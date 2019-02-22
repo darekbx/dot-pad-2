@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">DotPad2</string>
+
+    <string name="title_archive">Archive</string>
+    <string name="title_statistics">Statistics</string>
+    <string name="title_drag">Drag</string>
+</resources>
