@@ -3,8 +3,8 @@ package com.dotpad2.ui.dots
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import com.dotpad2.R
 import kotlinx.android.synthetic.main.activity_dots.*
+import com.dotpad2.R
 
 class DotsActivity : AppCompatActivity() {
 
