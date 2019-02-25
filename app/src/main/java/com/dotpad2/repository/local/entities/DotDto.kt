@@ -9,6 +9,7 @@ class DotDto(
     @PrimaryKey(autoGenerate = true) var id: Long? = null,
     @ColumnInfo(name = "text") var text: String = "",
     @ColumnInfo(name = "size") var size: Int = 0,
+    @ColumnInfo(name = "color") var color: Int = 0,
     @ColumnInfo(name = "position_x") var positionX: Int = 0,
     @ColumnInfo(name = "position_y") var positionY: Int = 0,
     @ColumnInfo(name = "created_date") var createdDate: Long = 0,
