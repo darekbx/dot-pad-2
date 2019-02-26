@@ -7,23 +7,14 @@
         android:layout_height="match_parent"
         tools:context=".ui.dots.DotsActivity">
 
-    <FrameLayout
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/ic_samlpe_dot"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-    />
-    <FrameLayout
-        android:layout_width="38dp"
-        android:layout_height="38dp"
-        android:background="@drawable/ic_samlpe_dot_inner"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+    <com.dotpad2.ui.dots.DotBoardView
+        android:id="@+id/dot_board"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

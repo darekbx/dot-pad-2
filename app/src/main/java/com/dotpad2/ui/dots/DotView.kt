@@ -5,7 +5,6 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
-import com.dotpad2.model.Dot
 
 class DotView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
 
@@ -14,10 +13,11 @@ class DotView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
     }
 
     val dotPaint = Paint()
+    var dotSize = 0
+    var dotColor = 0
 
     init {
         dotPaint.apply {
-            color = dot.color
             isAntiAlias = true
         }
     }
@@ -25,16 +25,17 @@ class DotView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 
+        dotPaint.color = dotColor
+
         val x = width / 2F
         val y = height / 2F
-        val radius = dot.size / 2F
+        val radius = dotSize() / 2F
         canvas?.drawCircle(x, y, radius, dotPaint)
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(dotSize(), dotSize())
+        setMeasuredDimension(dotSize(), dotSize())
     }
 
-    private val dot by lazy { tag as Dot }
-    private fun dotSize() = dot.size * SIZE_RATIO
+    private fun dotSize() = dotSize * SIZE_RATIO
 }
