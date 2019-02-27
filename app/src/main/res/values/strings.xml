@@ -4,4 +4,8 @@
     <string name="title_archive">Archive</string>
     <string name="title_statistics">Statistics</string>
     <string name="title_drag">Drag</string>
+
+    <string name="dot_text_hint">Enter note</string>
+    <string name="dot_no_reminder">No reminder</string>
+    <string name="dot_is_sticked">Sticked</string>
 </resources>
