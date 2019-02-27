@@ -4,8 +4,10 @@ import android.graphics.Point
 import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDialogFragment
 import com.dotpad2.R
 import com.dotpad2.model.Dot
+import com.dotpad2.ui.dotdialog.DotDialog
 
 class DotsActivity : AppCompatActivity() {
 
@@ -13,11 +15,35 @@ class DotsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dots)
 
-        dotBoard.adapter = dotAdapter
+        prepareDotsBoard()
 
-        dotAdapter.add(Dot("Dot", 4, getColor(R.color.dotRed), Point(100, 120), 0, false, false, null, null, null))
 
+        dotAdapter.add(Dot(null, "Dot", 4, getColor(R.color.dotRed), Point(100, 120), 0, false, false, null, null, null))
         dotBoard.invalidate()
+    }
+
+    fun prepareDotsBoard() {
+        dotBoard.adapter = dotAdapter
+        with (dotBoard) {
+            newDotCallback = object : () -> Unit {
+                override fun invoke() {
+                    showDotDialog()
+                }
+            }
+            openDotCallback = object : (Dot) -> Unit {
+                override fun invoke(dot: Dot) {
+                    showDotDialog(dot)
+                }
+            }
+        }
+    }
+
+    fun showDotDialog(dot: Dot? = null) {
+
+        val dialog = DotDialog()
+        dialog.setStyle(AppCompatDialogFragment.STYLE_NO_TITLE, 0);
+        dialog.show(supportFragmentManager, "")
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

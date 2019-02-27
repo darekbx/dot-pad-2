@@ -9,11 +9,29 @@ object Mappers {
     fun dtoDtoToDot(dotDto: DotDto) =
         with(dotDto) {
             Dot(
-                id ?: -1,
+                id ?: null,
                 text,
                 size,
                 color,
                 Point(positionX, positionY),
+                createdDate,
+                isArchived,
+                isSticked,
+                reminder,
+                calendarEventId,
+                calendarReminderId
+            )
+        }
+
+    fun dtoToDotDto(dot: Dot) =
+        with(dot) {
+            DotDto(
+                id,
+                text,
+                size,
+                color,
+                position.x,
+                position.y,
                 createdDate,
                 isArchived,
                 isSticked,

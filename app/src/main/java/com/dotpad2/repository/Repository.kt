@@ -14,11 +14,13 @@ class Repository(private val dotsDao: DotsDao) {
         Transformations.map(dotsDao.fetchAll(limit, offset), { mapDotDtosToDots(it) })
 
     fun add(dot: Dot) {
-
+        val dotDto = Mappers.dtoToDotDto(dot)
+        dotsDao.add(dotDto)
     }
 
     fun update(dot: Dot) {
-
+        val dotDto = Mappers.dtoToDotDto(dot)
+        dotsDao.update(dotDto)
     }
 
     fun markDotArchived(dotId: Long, isArchived: Boolean) {

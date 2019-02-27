@@ -2,6 +2,7 @@ package com.dotpad2.ui.dots
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.GestureDetector
 import android.view.MotionEvent
 import android.widget.AdapterView
 import com.dotpad2.model.Dot
@@ -9,6 +10,9 @@ import com.dotpad2.model.Dot
 class DotBoardView(context: Context, attrs: AttributeSet?) : AdapterView<DotAdapter>(context, attrs) {
 
     private lateinit var dotAdapter: DotAdapter
+
+    var openDotCallback: ((dot: Dot) -> Unit)? = null
+    var newDotCallback: (() -> Unit)? = null
 
     override fun getAdapter(): DotAdapter = dotAdapter
 
@@ -22,8 +26,8 @@ class DotBoardView(context: Context, attrs: AttributeSet?) : AdapterView<DotAdap
 
     override fun setSelection(position: Int) {}
 
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-        return super.onTouchEvent(event)
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        return gestureDetector.onTouchEvent(event)
     }
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
@@ -63,8 +67,35 @@ class DotBoardView(context: Context, attrs: AttributeSet?) : AdapterView<DotAdap
     }
 
     private fun openDot(dot: Dot) {
+        openDotCallback?.invoke(dot)
     }
 
     private fun deleteDot(dot: Dot) {
     }
+
+    val gestureDetector = GestureDetector(context, object : GestureDetector.OnGestureListener {
+
+        override fun onShowPress(e: MotionEvent?) {
+        }
+
+        override fun onDown(e: MotionEvent?): Boolean {
+            return true
+        }
+
+        override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean {
+            return true
+        }
+
+        override fun onScroll(e1: MotionEvent?, e2: MotionEvent?, distanceX: Float, distanceY: Float): Boolean {
+            return true
+        }
+
+        override fun onLongPress(e: MotionEvent?) {
+        }
+
+        override fun onSingleTapUp(e: MotionEvent?): Boolean {
+            newDotCallback?.invoke()
+            return true
+        }
+    })
 }

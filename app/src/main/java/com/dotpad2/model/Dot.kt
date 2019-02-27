@@ -3,7 +3,7 @@ package com.dotpad2.model
 import android.graphics.Point
 
 class Dot(
-    var id: Long,
+    var id: Long?,
     var text: String,
     var size: Int,
     var color: Int = 0,
