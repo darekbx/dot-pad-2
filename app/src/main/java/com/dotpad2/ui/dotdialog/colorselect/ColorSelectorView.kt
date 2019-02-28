@@ -53,13 +53,10 @@ class ColorSelectorView(context: Context, attrs: AttributeSet?)
 
     private fun onColorTap(view: View) {
         val position = indexOfChild(view)
-
         for (colorIndex in 0 until adapter.count) {
-            val colorWrapper = adapter.getItem(position)
-            colorWrapper.checked = colorIndex == position
+            val colorView = getChildAt(colorIndex) as ColorView
+            colorView.updateChecked(position == colorIndex)
         }
-
-        invalidate()
     }
 
     private fun calculateChildSize(parentWidth: Int = width) =

@@ -2,20 +2,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
-        <import type="android.view.View" />
         <variable name="colorWrapper" type="com.dotpad2.model.ColorWrapper" />
     </data>
-    <FrameLayout
+    <com.dotpad2.ui.dotdialog.colorselect.ColorView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@{colorWrapper.checked ? @drawable/bg_selected_color : @android:color/transparent}"
-    >
-        <FrameLayout
-                android:id="@+id/aaa"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="4dp"
-                android:background="@{colorWrapper.color}"
-            />
-    </FrameLayout>
+        app:colorWrapper="@{colorWrapper}"
+    />
 </layout>

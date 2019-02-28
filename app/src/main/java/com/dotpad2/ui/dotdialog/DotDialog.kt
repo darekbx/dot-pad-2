@@ -24,7 +24,8 @@ class DotDialog : AppCompatDialogFragment() {
         val colorSelector = view.findViewById<ColorSelectorView>(R.id.color_selector)
         colorSelector.adapter = colorAdapter
 
-        val colors = provideColors(view.context).map { ColorWrapper(it, true) }
+        val colors = provideColors(view.context).map { ColorWrapper(it) }
+        colors.first().checked = true
         colorAdapter.addAll(colors)
     }
 
