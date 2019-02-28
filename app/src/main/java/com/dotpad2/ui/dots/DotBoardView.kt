@@ -7,7 +7,8 @@ import android.view.MotionEvent
 import android.widget.AdapterView
 import com.dotpad2.model.Dot
 
-class DotBoardView(context: Context, attrs: AttributeSet?) : AdapterView<DotAdapter>(context, attrs) {
+class DotBoardView(context: Context, attrs: AttributeSet?)
+    : AdapterView<DotAdapter>(context, attrs) {
 
     private lateinit var dotAdapter: DotAdapter
 
@@ -33,8 +34,8 @@ class DotBoardView(context: Context, attrs: AttributeSet?) : AdapterView<DotAdap
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
         if (changed || childCount == 0) {
-            for (i in 0 until adapter.count) {
-                addDotToLayout(i)
+            for (dotIndex in 0 until adapter.count) {
+                addDotToLayout(dotIndex)
             }
             invalidate()
         }
