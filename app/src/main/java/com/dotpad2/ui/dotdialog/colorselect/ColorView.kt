@@ -6,49 +6,81 @@ import android.util.AttributeSet
 import android.view.View
 import com.dotpad2.model.ColorWrapper
 
-class ColorView(context: Context, attributeSet: AttributeSet) : View(context, attributeSet) {
+open class ColorView(context: Context, attributeSet: AttributeSet) : View(context, attributeSet) {
 
     companion object {
         val OUT_PADDING = 2F
         var CORNERS_RADIUS = 8F
-        val CHECKED_BORDER_SIZE = 4F
+        val CHECK_STROKE_WIDTH = 4F
     }
 
-    private val paintSolid = Paint().apply { isAntiAlias = true }
-    private val paintStroke = Paint().apply {
-        isAntiAlias = true
-        style = Paint.Style.STROKE
-        color = Color.WHITE
-        strokeWidth = CHECKED_BORDER_SIZE
-    }
+    protected val solidPaint = Paint().apply { isAntiAlias = true }
+    protected val strokePaint =
+        Paint().apply {
+            isAntiAlias = true
+            style = Paint.Style.STROKE
+            color = Color.WHITE
+            textSize = 14F
+            strokeWidth = CHECK_STROKE_WIDTH
+        }
+
+    private val checkPath =
+        Path().apply {
+            moveTo(0F, 8F)
+            lineTo(6F, 14F)
+            lineTo(22F, 0F)
+        }
 
     var colorWrapper: ColorWrapper? = null
         set(value) {
             field = value
             field?.run {
-                paintSolid.color = color
+                solidPaint.color = color
             }
         }
 
-    fun updateChecked(isChecked: Boolean) {
-        colorWrapper?.checked = isChecked
+    open fun updateSelected(isSelected: Boolean) {
+        colorWrapper?.selected = isSelected
         invalidate()
     }
 
     override fun onDraw(canvas: Canvas?) {
         canvas?.run {
             colorWrapper?.let {
-                drawRect(this, paintSolid)
-                if (it.checked) {
-                    drawRect(this, paintStroke)
+                drawRect(this)
+                if (it.selected) {
+                    drawTick(this)
                 }
             }
         }
     }
 
-    private fun drawRect(canvas: Canvas, paint: Paint) {
-        canvas.drawRoundRect(viewRect, CORNERS_RADIUS, CORNERS_RADIUS, paint)
+    protected fun drawRect(canvas: Canvas) {
+        canvas.drawRoundRect(viewRect, CORNERS_RADIUS, CORNERS_RADIUS, solidPaint)
     }
 
-    private val viewRect by lazy { RectF(OUT_PADDING, OUT_PADDING, width - OUT_PADDING, height - OUT_PADDING) }
+    protected fun drawTick(canvas: Canvas) {
+        val (xOffset, yOffset) = computeTickOffset()
+        with(canvas) {
+            save()
+            translate(xOffset, yOffset)
+            drawPath(checkPath, strokePaint)
+            restore()
+        }
+    }
+
+    private fun computeTickOffset(): Pair<Float, Float> {
+        val xOffset = (width - tickBounds.width()) - CORNERS_RADIUS * 2
+        return Pair(xOffset, CORNERS_RADIUS * 2)
+    }
+
+    private val tickBounds by lazy {
+        var tickBounds = RectF()
+        checkPath.computeBounds(tickBounds, false)
+        return@lazy tickBounds
+    }
+
+    private val viewRect by lazy {
+        RectF(OUT_PADDING, OUT_PADDING, width - OUT_PADDING, height - OUT_PADDING)
+    }
 }

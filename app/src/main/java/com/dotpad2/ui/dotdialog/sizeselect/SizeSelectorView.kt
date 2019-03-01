@@ -1,24 +1,25 @@
-package com.dotpad2.ui.dotdialog.colorselect
+package com.dotpad2.ui.dotdialog.sizeselect
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.AdapterView
 
-class ColorSelectorView(context: Context, attrs: AttributeSet?)
-    : AdapterView<ColorSelectorAdapter>(context, attrs) {
+class SizeSelectorView(context: Context, attrs: AttributeSet?)
+    : AdapterView<SizeSelectorAdapter>(context, attrs) {
 
     companion object {
+        val DESIRED_ITEMS_COUNT = 6
         val ITEM_PADDING = 5
     }
 
-    private lateinit var colorSelectorAdapter: ColorSelectorAdapter
+    private lateinit var sizeSelectorAdapter: SizeSelectorAdapter
 
-    override fun getAdapter(): ColorSelectorAdapter = colorSelectorAdapter
+    override fun getAdapter(): SizeSelectorAdapter = sizeSelectorAdapter
 
-    override fun setAdapter(adapter: ColorSelectorAdapter?) {
+    override fun setAdapter(adapter: SizeSelectorAdapter?) {
         adapter?.let {
-            this.colorSelectorAdapter = it
+            this.sizeSelectorAdapter = it
         }
     }
 
@@ -46,19 +47,24 @@ class ColorSelectorView(context: Context, attrs: AttributeSet?)
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val widthSize = MeasureSpec.getSize(widthMeasureSpec)
-        val childSize = calculateChildSize(widthSize)
-        setMeasuredDimension(width, childSize)
+        val childSize = calculateLayoutWidth(widthSize)
+        setMeasuredDimension(
+            (childSize + ITEM_PADDING) * adapter.count,
+            childSize)
     }
 
-    fun getSelectedColor() = adapter.selectedItem()?.color ?: null
+    fun getSelectedSize() = adapter.selectedItem()?.size ?: null
 
     private fun onColorTap(view: View) {
         val position = indexOfChild(view)
-        for (colorIndex in 0 until adapter.count) {
-            val colorView = getChildAt(colorIndex) as ColorView
-            colorView.updateSelected(position == colorIndex)
+        for (sizeIndex in 0 until adapter.count) {
+            val sizeView = getChildAt(sizeIndex) as SizeView
+            sizeView.updateSelected(position == sizeIndex)
         }
     }
+
+    private fun calculateLayoutWidth(parentWidth: Int = width) =
+        parentWidth / DESIRED_ITEMS_COUNT - ITEM_PADDING
 
     private fun calculateChildSize(parentWidth: Int = width) =
         parentWidth / adapter.count - ITEM_PADDING

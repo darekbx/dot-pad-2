@@ -18,9 +18,19 @@ class ColorSelectorAdapter(context: Context) : ArrayAdapter<ColorWrapper>(contex
             else -> DataBindingUtil.getBinding<AdapterColorBinding>(convertView)
         } as AdapterColorBinding
         with(binding) {
-            colorWrapper = getItem(position)
+            item = getItem(position)
             return root
         }
+    }
+
+    fun selectedItem(): ColorWrapper? {
+        for (colorIndex in 0 until count) {
+            val colorWrapper = getItem(colorIndex)
+            if (colorWrapper != null && colorWrapper.selected) {
+                return colorWrapper
+            }
+        }
+        return null
     }
 
     val layoutInflater by lazy { LayoutInflater.from(context) }

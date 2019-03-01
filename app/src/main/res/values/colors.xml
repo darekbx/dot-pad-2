@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#263238</color>
     <color name="colorAccent">#D81B60</color>
 
+    <color name="grey">#757575</color>
+
     <color name="dotRed">#ef5350</color>
     <color name="dotTeal">#26a69a</color>
     <color name="dotBlue">#42a5f5</color>

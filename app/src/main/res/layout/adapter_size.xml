@@ -2,11 +2,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
-        <variable name="item" type="com.dotpad2.model.ColorWrapper" />
+        <variable name="item" type="com.dotpad2.model.SizeWrapper" />
     </data>
-    <com.dotpad2.ui.dotdialog.colorselect.ColorView
+    <com.dotpad2.ui.dotdialog.sizeselect.SizeView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:colorWrapper="@{item}"
+        app:sizeWrapper="@{item}"
     />
 </layout>

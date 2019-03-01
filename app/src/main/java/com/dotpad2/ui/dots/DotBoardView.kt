@@ -43,26 +43,25 @@ class DotBoardView(context: Context, attrs: AttributeSet?)
 
     private fun addDotToLayout(dotIndex: Int) {
         val dot = adapter.getItem(dotIndex)
-        val dotView = adapter.getView(dotIndex, null, this) as DotView
+        val dotView = (adapter.getView(dotIndex, null, this) as DotView).apply {
+            dotSize = dot.size
 
-        with(dotView) {
             setOnClickListener { openDot(dot) }
             setOnLongClickListener {
                 deleteDot(dot)
                 true
             }
+        }
 
-            dotSize = dot.size
-            measure(-1, -1)
-
+        with(dotView) {
             val dotPosition = dot.position
+            measure(-1, -1)
             layout(
                 dotPosition.x,
                 dotPosition.y,
                 dotPosition.x + measuredWidth,
                 dotPosition.y + measuredHeight
             )
-
             addViewInLayout(this, dotIndex, null, true)
         }
     }
