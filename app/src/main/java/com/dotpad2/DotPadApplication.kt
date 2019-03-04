@@ -4,6 +4,7 @@ import android.app.Application
 import com.dotpad2.di.AppComponent
 import com.dotpad2.di.AppModule
 import com.dotpad2.di.DaggerAppComponent
+import com.facebook.stetho.Stetho
 
 class DotPadApplication : Application() {
 
@@ -16,5 +17,8 @@ class DotPadApplication : Application() {
             .appModule(AppModule(this))
             .build()
 
+        if (BuildConfig.DEBUG) {
+            Stetho.initializeWithDefaults(this)
+        }
     }
 }

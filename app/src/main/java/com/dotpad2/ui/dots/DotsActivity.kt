@@ -5,15 +5,18 @@ import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDialogFragment
+import com.dotpad2.DotPadApplication
 import com.dotpad2.R
 import com.dotpad2.model.Dot
 import com.dotpad2.ui.dotdialog.DotDialog
+import com.dotpad2.ui.dotdialog.setDialogArguments
 
 class DotsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dots)
+        (application as DotPadApplication).appComponent.inject(this)
 
         prepareDotsBoard()
 
@@ -39,11 +42,10 @@ class DotsActivity : AppCompatActivity() {
     }
 
     fun showDotDialog(dot: Dot? = null) {
-
-        val dialog = DotDialog()
-        dialog.setStyle(AppCompatDialogFragment.STYLE_NO_TITLE, 0);
-        dialog.show(supportFragmentManager, "")
-
+        DotDialog().apply {
+            setStyle(AppCompatDialogFragment.STYLE_NO_TITLE, 0)
+            setDialogArguments(dot)
+        }.show(supportFragmentManager, "")
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

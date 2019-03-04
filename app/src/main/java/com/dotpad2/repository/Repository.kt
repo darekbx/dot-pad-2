@@ -13,6 +13,9 @@ class Repository(private val dotsDao: DotsDao) {
     fun fetchAll(limit: Int, offset: Int) =
         Transformations.map(dotsDao.fetchAll(limit, offset), { mapDotDtosToDots(it) })
 
+    fun getDot(dotId: Long) =
+        Transformations.map(dotsDao.fetchDot(dotId), { Mappers.dtoDtoToDot(it) })
+
     fun add(dot: Dot) {
         val dotDto = Mappers.dtoToDotDto(dot)
         dotsDao.add(dotDto)
