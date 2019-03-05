@@ -32,6 +32,7 @@ open class ColorView(context: Context, attributeSet: AttributeSet) : View(contex
         }
 
     var colorWrapper: ColorWrapper? = null
+        get
         set(value) {
             field = value
             field?.run {

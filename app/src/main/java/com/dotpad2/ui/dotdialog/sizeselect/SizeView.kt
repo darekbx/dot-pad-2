@@ -19,6 +19,7 @@ class SizeView(context: Context, attributeSet: AttributeSet) : ColorView(context
         }
 
     var sizeWrapper: SizeWrapper? = null
+        get
         set(value) {
             field = value
             field?.run {

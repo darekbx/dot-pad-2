@@ -4,6 +4,8 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import com.dotpad2.extensions.childLoop
 
 class ColorSelectorView(context: Context, attrs: AttributeSet?)
     : AdapterView<ColorSelectorAdapter>(context, attrs) {
@@ -50,13 +52,29 @@ class ColorSelectorView(context: Context, attrs: AttributeSet?)
         setMeasuredDimension(width, childSize)
     }
 
-    fun getSelectedColor() = adapter.selectedItem()?.color ?: null
+    var selectedColor: Int?
+        get() = adapter.selectedItem()?.color ?: null
+        set(value) {
+            value?.let { colorToSet ->
+                selectByColor { it == colorToSet }
+            }
+        }
 
     private fun onColorTap(view: View) {
         val position = indexOfChild(view)
-        for (colorIndex in 0 until adapter.count) {
-            val colorView = getChildAt(colorIndex) as ColorView
-            colorView.updateSelected(position == colorIndex)
+        selectByIndex { it == position }
+    }
+
+    private fun selectByIndex(predictor: ((index: Int) -> Boolean)) {
+        childLoop<ColorView> { index, colorView ->
+            colorView.updateSelected(predictor(index))
+        }
+    }
+
+    private fun selectByColor(predictor: ((color: Int) -> Boolean)) {
+        childLoop<ColorView> { _, colorView ->
+            val color = colorView.colorWrapper?.color ?: 0
+            colorView.updateSelected(predictor(color))
         }
     }
 

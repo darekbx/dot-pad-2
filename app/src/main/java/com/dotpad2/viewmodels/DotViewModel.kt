@@ -3,6 +3,8 @@ package com.dotpad2.viewmodels
 import androidx.lifecycle.ViewModel
 import com.dotpad2.model.Dot
 import com.dotpad2.repository.Repository
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import javax.inject.Inject
 
 class DotViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
@@ -13,10 +15,12 @@ class DotViewModel @Inject constructor(private val repository: Repository) : Vie
 
     fun loadDot(dotId: Long) = repository.getDot(dotId)
 
-    fun saveDot(dot: Dot) {
-        when (dot.id) {
-            null -> repository.add(dot)
-            else -> repository.update(dot)
-        }
+    suspend fun saveDot(dot: Dot) {
+        GlobalScope.async {
+            when (dot.id) {
+                null -> repository.add(dot)
+                else -> repository.update(dot)
+            }
+        }.await()
     }
 }

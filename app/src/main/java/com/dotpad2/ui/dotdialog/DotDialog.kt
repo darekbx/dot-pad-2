@@ -1,6 +1,7 @@
 package com.dotpad2.ui.dotdialog
 
 import android.content.Context
+import android.graphics.Point
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -22,11 +23,20 @@ import com.dotpad2.ui.dotdialog.colorselect.ColorSelectorView
 import com.dotpad2.ui.dotdialog.sizeselect.SizeSelectorAdapter
 import com.dotpad2.ui.dotdialog.sizeselect.SizeSelectorView
 import com.dotpad2.viewmodels.DotViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-fun DotDialog.setDialogArguments(dot: Dot?) {
-    dot?.id?.let {
-        arguments = Bundle(1).apply { putLong(DotDialog.DOT_ID, it) }
+fun DotDialog.setDialogArguments(position:Point?, dot: Dot?) {
+    arguments = Bundle().apply {
+        dot?.id?.let {
+            putLong(DotDialog.DOT_ID, it)
+        }
+        position?.let {
+            putInt(DotDialog.DOT_POSITION_X, it.x)
+            putInt(DotDialog.DOT_POSITION_Y, it.y)
+        }
     }
 }
 
@@ -34,11 +44,15 @@ class DotDialog : AppCompatDialogFragment() {
 
     companion object {
         val DOT_ID = "dot_id"
+        val DOT_POSITION_X = "dot_position_x"
+        val DOT_POSITION_Y = "dot_position_y"
     }
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     internal lateinit var dotViewModel: DotViewModel
+
+    private var loadedDot: Dot? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return LayoutInflater.from(context).inflate(R.layout.dialog_dot, container, false)
@@ -58,7 +72,15 @@ class DotDialog : AppCompatDialogFragment() {
 
     private fun displayDotIfExists() {
         getDotId()?.let { dotId ->
-            dotViewModel.loadDot(dotId).observe(this@DotDialog, Observer { dot -> })
+            dotViewModel.loadDot(dotId).observe(this@DotDialog, Observer { dot ->
+
+                loadedDot = dot
+
+                noteView.setText(dot.text)
+                isStickedView.isChecked = dot.isSticked
+                colorSelectorView.selectedColor = dot.color
+                sizeSelectorView.selectedSize = dot.size
+            })
         }
     }
 
@@ -67,6 +89,15 @@ class DotDialog : AppCompatDialogFragment() {
             ?.takeIf { it.containsKey(DOT_ID) }
             ?.getLong(DOT_ID)
             ?: null
+
+    private fun getPosition() =
+        arguments
+            ?.takeIf { it.containsKey(DOT_POSITION_X) && it.containsKey(DOT_POSITION_Y) }
+            ?.let {
+                val x = it.getInt(DOT_POSITION_X)
+                val y = it.getInt(DOT_POSITION_Y)
+                Point(x, y)
+            } ?: null
 
     private fun handleClickEvents() {
         view?.run {
@@ -92,12 +123,26 @@ class DotDialog : AppCompatDialogFragment() {
 
     private fun saveTheDot() {
         view?.run {
-            val message = findViewById<EditText>(R.id.dot_note).text.toString()
-            val isSticked = findViewById<CheckBox>(R.id.dot_is_sticked).isChecked
-            val color = findViewById<ColorSelectorView>(R.id.color_selector).getSelectedColor()
-            val size = findViewById<SizeSelectorView>(R.id.size_selector).getSelectedSize()
+            val defaultColor = provideColors(context)[0]
+            val defaultSize = provideSizes()[0]
 
-            Log.v("----------", "Color: $color, size: $size")
+            val message = noteView.text.toString()
+            val isSticked = isStickedView.isChecked
+            val color = colorSelectorView.selectedColor ?: defaultColor
+            val size = sizeSelectorView.selectedSize ?: defaultSize
+            val position = loadedDot?.position ?: getPosition() ?: Point()
+            val dot = Dot(
+                text = message,
+                size = size,
+                color = color,
+                isSticked = isSticked,
+                position = position
+            )
+
+            GlobalScope.launch(Dispatchers.Main) {
+                dotViewModel.saveDot(dot)
+                dismiss()
+            }
         }
     }
 
@@ -139,4 +184,9 @@ class DotDialog : AppCompatDialogFragment() {
     }
 
     private fun provideSizes() = arrayOf(10, 8, 6, 5)
+
+    private val noteView by lazy { view?.findViewById(R.id.dot_note) as EditText }
+    private val isStickedView by lazy { view?.findViewById(R.id.dot_is_sticked) as CheckBox }
+    private val colorSelectorView by lazy { view?.findViewById(R.id.color_selector) as ColorSelectorView }
+    private val sizeSelectorView by lazy { view?.findViewById(R.id.size_selector) as SizeSelectorView }
 }

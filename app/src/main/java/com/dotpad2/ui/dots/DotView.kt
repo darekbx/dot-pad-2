@@ -2,6 +2,7 @@ package com.dotpad2.ui.dots
 
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
@@ -26,6 +27,10 @@ class DotView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
         super.onDraw(canvas)
 
         dotPaint.color = dotColor
+
+        if (dotPaint.color == 0) {
+            dotPaint.color = Color.CYAN
+        }
 
         val x = width / 2F
         val y = height / 2F

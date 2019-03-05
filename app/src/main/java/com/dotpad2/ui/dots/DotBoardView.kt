@@ -1,6 +1,7 @@
 package com.dotpad2.ui.dots
 
 import android.content.Context
+import android.graphics.Point
 import android.util.AttributeSet
 import android.view.GestureDetector
 import android.view.MotionEvent
@@ -13,13 +14,14 @@ class DotBoardView(context: Context, attrs: AttributeSet?)
     private lateinit var dotAdapter: DotAdapter
 
     var openDotCallback: ((dot: Dot) -> Unit)? = null
-    var newDotCallback: (() -> Unit)? = null
+    var newDotCallback: ((position: Point) -> Unit)? = null
 
     override fun getAdapter(): DotAdapter = dotAdapter
 
     override fun setAdapter(adapter: DotAdapter?) {
         adapter?.let {
             this.dotAdapter = it
+            refresh()
         }
     }
 
@@ -39,6 +41,11 @@ class DotBoardView(context: Context, attrs: AttributeSet?)
             }
             invalidate()
         }
+    }
+
+    fun refresh() {
+		removeAllViewsInLayout()
+		requestLayout()
     }
 
     private fun addDotToLayout(dotIndex: Int) {
@@ -94,7 +101,10 @@ class DotBoardView(context: Context, attrs: AttributeSet?)
         }
 
         override fun onSingleTapUp(e: MotionEvent?): Boolean {
-            newDotCallback?.invoke()
+            e?.run {
+                val position = Point(x.toInt(), y.toInt())
+                newDotCallback?.invoke(position)
+            }
             return true
         }
     })

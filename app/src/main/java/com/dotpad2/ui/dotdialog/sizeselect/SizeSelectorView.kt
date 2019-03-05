@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.AdapterView
+import com.dotpad2.extensions.childLoop
 
 class SizeSelectorView(context: Context, attrs: AttributeSet?)
     : AdapterView<SizeSelectorAdapter>(context, attrs) {
@@ -50,16 +51,33 @@ class SizeSelectorView(context: Context, attrs: AttributeSet?)
         val childSize = calculateLayoutWidth(widthSize)
         setMeasuredDimension(
             (childSize + ITEM_PADDING) * adapter.count,
-            childSize)
+            childSize
+        )
     }
 
-    fun getSelectedSize() = adapter.selectedItem()?.size ?: null
+    var selectedSize: Int?
+        get() = adapter.selectedItem()?.size ?: null
+        set(value) {
+            value?.let { sizeToSet ->
+                selectBySize { it == sizeToSet }
+            }
+        }
 
     private fun onColorTap(view: View) {
         val position = indexOfChild(view)
-        for (sizeIndex in 0 until adapter.count) {
-            val sizeView = getChildAt(sizeIndex) as SizeView
-            sizeView.updateSelected(position == sizeIndex)
+        selectByIndex { it == position }
+    }
+
+    private fun selectByIndex(predictor: ((index: Int) -> Boolean)) {
+        childLoop<SizeView> { index, sizeView ->
+            sizeView.updateSelected(predictor(index))
+        }
+    }
+
+    private fun selectBySize(predictor: ((size: Int) -> Boolean)) {
+        childLoop<SizeView> { index, sizeView ->
+            val size = sizeView.sizeWrapper?.size ?: 0
+            sizeView.updateSelected(predictor(size))
         }
     }
 
