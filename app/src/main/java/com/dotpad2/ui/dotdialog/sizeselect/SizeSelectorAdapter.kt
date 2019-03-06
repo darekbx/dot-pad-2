@@ -19,6 +19,7 @@ class SizeSelectorAdapter(context: Context) : ArrayAdapter<SizeWrapper>(context,
         } as AdapterSizeBinding
         with(binding) {
             item = getItem(position)
+            executePendingBindings()
             return root
         }
     }

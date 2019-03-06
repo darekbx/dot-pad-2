@@ -10,5 +10,6 @@
         android:layout_height="match_parent"
         app:dotSize="@{dot.size}"
         app:dotColor="@{dot.color}"
+        app:dotCreatedDate="@{dot.createdDate}"
     />
 </layout>

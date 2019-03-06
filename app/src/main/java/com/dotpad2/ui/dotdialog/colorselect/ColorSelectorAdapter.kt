@@ -19,6 +19,7 @@ class ColorSelectorAdapter(context: Context) : ArrayAdapter<ColorWrapper>(contex
         } as AdapterColorBinding
         with(binding) {
             item = getItem(position)
+            executePendingBindings()
             return root
         }
     }

@@ -26,6 +26,7 @@ import com.dotpad2.viewmodels.DotViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 fun DotDialog.setDialogArguments(position:Point?, dot: Dot?) {
@@ -66,22 +67,25 @@ class DotDialog : AppCompatDialogFragment() {
         prepareColorSelect(view)
         prepareSizeSelect(view)
 
-        handleClickEvents()
         displayDotIfExists()
+        handleClickEvents()
     }
 
     private fun displayDotIfExists() {
         getDotId()?.let { dotId ->
             dotViewModel.loadDot(dotId).observe(this@DotDialog, Observer { dot ->
-
                 loadedDot = dot
-
-                noteView.setText(dot.text)
-                isStickedView.isChecked = dot.isSticked
-                colorSelectorView.selectedColor = dot.color
-                sizeSelectorView.selectedSize = dot.size
+                udpateViews(dot)
+                prepareResetButton()
             })
         }
+    }
+
+    private fun udpateViews(dot: Dot) {
+        noteView.setText(dot.text)
+        isStickedView.isChecked = dot.isSticked
+        colorSelectorView.selectedColor = dot.color
+        sizeSelectorView.selectedSize = dot.size
     }
 
     private fun getDotId() =
@@ -102,8 +106,14 @@ class DotDialog : AppCompatDialogFragment() {
     private fun handleClickEvents() {
         view?.run {
             findViewById<View>(R.id.save_button).setOnClickListener { saveClick() }
-            findViewById<View>(R.id.reset_button).setOnClickListener { resetClick() }
             findViewById<View>(R.id.reminder_button).setOnClickListener { reminderClick() }
+        }
+    }
+
+    private fun prepareResetButton() {
+        if (loadedDot != null) {
+            resetButton.setOnClickListener { resetClick() }
+            resetButton.visibility = View.VISIBLE
         }
     }
 
@@ -114,7 +124,7 @@ class DotDialog : AppCompatDialogFragment() {
     }
 
     fun resetClick() {
-
+        resetDotCreatedTime()
     }
 
     fun reminderClick() {
@@ -125,22 +135,28 @@ class DotDialog : AppCompatDialogFragment() {
         view?.run {
             val defaultColor = provideColors(context)[0]
             val defaultSize = provideSizes()[0]
+            val dot = loadedDot ?: Dot()
 
-            val message = noteView.text.toString()
-            val isSticked = isStickedView.isChecked
-            val color = colorSelectorView.selectedColor ?: defaultColor
-            val size = sizeSelectorView.selectedSize ?: defaultSize
-            val position = loadedDot?.position ?: getPosition() ?: Point()
-            val dot = Dot(
-                text = message,
-                size = size,
-                color = color,
-                isSticked = isSticked,
-                position = position
-            )
+            with (dot) {
+                text = noteView.text.toString()
+                size = sizeSelectorView.selectedSize ?: defaultSize
+                color = colorSelectorView.selectedColor ?: defaultColor
+                isSticked = isStickedView.isChecked
+                position = loadedDot?.position ?: getPosition() ?: Point()
+            }
 
             GlobalScope.launch(Dispatchers.Main) {
                 dotViewModel.saveDot(dot)
+                dismiss()
+            }
+        }
+    }
+
+    private fun resetDotCreatedTime() {
+        loadedDot?.let {
+            it.createdDate = Calendar.getInstance().timeInMillis
+            GlobalScope.launch(Dispatchers.Main) {
+                dotViewModel.saveDot(it)
                 dismiss()
             }
         }
@@ -189,4 +205,5 @@ class DotDialog : AppCompatDialogFragment() {
     private val isStickedView by lazy { view?.findViewById(R.id.dot_is_sticked) as CheckBox }
     private val colorSelectorView by lazy { view?.findViewById(R.id.color_selector) as ColorSelectorView }
     private val sizeSelectorView by lazy { view?.findViewById(R.id.size_selector) as SizeSelectorView }
+    private val resetButton by lazy { view?.findViewById(R.id.reset_button) as View }
 }

@@ -19,6 +19,7 @@ class DotAdapter(context: Context) : ArrayAdapter<Dot>(context, R.layout.adapter
         } as AdapterDotBinding
         with(binding) {
             dot = getItem(position)
+            executePendingBindings()
             return root
         }
     }
