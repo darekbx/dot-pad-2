@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.View
 import com.dotpad2.utils.TimeUtils
@@ -54,9 +55,18 @@ class DotView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
 
     private fun drawDotCreatedAgo(canvas: Canvas) {
         var timeAgo = TimeUtils.calculateTimeAgo(dotCreatedDate)
+        val (xOffset, yOffset) = calculateAgoOffset(timeAgo)
         val x = width / 2F
         val y = height / 2F
-        canvas.drawText(timeAgo, x, y, textPaint)
+        canvas.drawText(timeAgo, x - xOffset, y + yOffset, textPaint)
+    }
+
+    private fun calculateAgoOffset(timeAgo: String): Pair<Float, Float> {
+        val textBounds = Rect()
+        textPaint.getTextBounds(timeAgo, 0, timeAgo.length, textBounds)
+        val xOffset = textBounds.width() / 2F
+        val yOffset = textBounds.height() / 2F
+        return Pair(xOffset, yOffset)
     }
 
     private fun dotSize() = dotSize * SIZE_RATIO
