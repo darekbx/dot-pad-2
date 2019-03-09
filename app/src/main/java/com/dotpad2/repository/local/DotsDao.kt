@@ -16,10 +16,10 @@ interface DotsDao {
     @Query("SELECT * FROM dots WHERE id = :dotId")
     fun fetchDot(dotId: Long): LiveData<DotDto>
 
-    @Query("SELECT * FROM dots WHERE is_archived = 0")
+    @Query("SELECT * FROM dots WHERE is_archived = 0 ORDER BY created_date DESC")
     fun fetchActive(): LiveData<List<DotDto>>
 
-    @Query("SELECT * FROM dots LIMIT :limit OFFSET :offset")
+    @Query("SELECT * FROM dots ORDER BY created_date DESC LIMIT :limit OFFSET :offset")
     fun fetchAll(limit: Int, offset: Int): LiveData<List<DotDto>>
 
     @Query("UPDATE dots SET is_archived = :isArchived WHERE id = :dotId")

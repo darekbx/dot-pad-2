@@ -14,6 +14,7 @@ import com.dotpad2.R
 import com.dotpad2.model.Dot
 import com.dotpad2.ui.dotdialog.DotDialog
 import com.dotpad2.ui.dotdialog.setDialogArguments
+import com.dotpad2.ui.dots.list.DotsListFragment
 import com.dotpad2.viewmodels.DotViewModel
 import javax.inject.Inject
 
@@ -35,6 +36,11 @@ class DotsActivity : AppCompatActivity() {
             dotAdapter.clear()
             dotAdapter.addAll(dots)
         })
+
+        supportFragmentManager
+            .beginTransaction()
+            .add(R.id.right_navigation, DotsListFragment())
+            .commitAllowingStateLoss()
     }
 
     fun prepareDotsBoard() {

@@ -29,7 +29,7 @@
         android:layout_width="@dimen/rightDrawerSize"
         android:layout_height="match_parent"
         android:layout_gravity="end"
-        android:background="#A930"
+        android:background="@color/colorPrimary"
         />
 
 </androidx.drawerlayout.widget.DrawerLayout>
