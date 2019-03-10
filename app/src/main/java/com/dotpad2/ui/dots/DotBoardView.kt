@@ -14,6 +14,7 @@ class DotBoardView(context: Context, attrs: AttributeSet?)
     private lateinit var dotAdapter: DotAdapter
 
     var openDotCallback: ((dot: Dot) -> Unit)? = null
+    var deleteDotCallback: ((dot: Dot) -> Unit)? = null
     var newDotCallback: ((position: Point) -> Unit)? = null
 
     override fun getAdapter(): DotAdapter = dotAdapter
@@ -78,6 +79,7 @@ class DotBoardView(context: Context, attrs: AttributeSet?)
     }
 
     private fun deleteDot(dot: Dot) {
+        deleteDotCallback?.invoke(dot)
     }
 
     val gestureDetector = GestureDetector(context, object : GestureDetector.OnGestureListener {

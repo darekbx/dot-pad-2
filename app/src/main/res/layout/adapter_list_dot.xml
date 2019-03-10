@@ -29,6 +29,7 @@
             android:padding="@dimen/paddingIn"
             android:text="@{dot.formattedDate()}"
             android:textColor="@color/ltgrey"
+            android:textSize="12sp"
             />
 
         <TextView

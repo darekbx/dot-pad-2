@@ -8,4 +8,7 @@
     <string name="dot_text_hint">Enter note</string>
     <string name="dot_no_reminder">No reminder</string>
     <string name="dot_is_sticked">Sticked</string>
+
+    <string name="dot_deleted_message">Deleted: %s</string>
+    <string name="dot_deleted_undo">Undo</string>
 </resources>

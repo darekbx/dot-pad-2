@@ -16,6 +16,10 @@ import com.dotpad2.ui.dotdialog.DotDialog
 import com.dotpad2.ui.dotdialog.setDialogArguments
 import com.dotpad2.ui.dots.list.DotsListFragment
 import com.dotpad2.viewmodels.DotViewModel
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class DotsActivity : AppCompatActivity() {
@@ -57,6 +61,11 @@ class DotsActivity : AppCompatActivity() {
                     showDotDialog(dot = dot)
                 }
             }
+            deleteDotCallback = object : (Dot) -> Unit {
+                override fun invoke(dot: Dot) {
+                    deleteDot(dot)
+                }
+            }
         }
     }
 
@@ -70,6 +79,25 @@ class DotsActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_dots, menu)
         return super.onCreateOptionsMenu(menu)
+    }
+
+    private fun deleteDot(dot: Dot) {
+        setDotArchived(dot, true)
+        Snackbar
+            .make(dotBoard, getString(R.string.dot_deleted_message, dot.text), Snackbar.LENGTH_LONG)
+            .setAction(R.string.dot_deleted_undo, { setDotArchived(dot, false) })
+            .show()
+    }
+
+    private fun setDotArchived(dot: Dot, isArchived: Boolean) {
+        dot.isArchived = isArchived
+        saveDot(dot)
+    }
+
+    private fun saveDot(dot: Dot) {
+        GlobalScope.launch(Dispatchers.Main) {
+            dotViewModel.saveDot(dot)
+        }
     }
 
     private val adapterObserver = object : DataSetObserver() {
