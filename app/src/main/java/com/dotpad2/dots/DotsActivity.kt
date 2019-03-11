@@ -15,8 +15,9 @@ import androidx.lifecycle.ViewModelProviders
 import com.dotpad2.DotPadApplication
 import com.dotpad2.R
 import com.dotpad2.model.Dot
-import com.dotpad2.dotdialog.DotDialog
-import com.dotpad2.dotdialog.setDialogArguments
+import com.dotpad2.dot.DotDialog
+import com.dotpad2.dot.DotReminder
+import com.dotpad2.dot.setDialogArguments
 import com.dotpad2.dots.list.DotsListFragment
 import com.dotpad2.repository.LocalPreferences
 import com.dotpad2.utils.PermissionsHelper
@@ -40,6 +41,9 @@ class DotsActivity : AppCompatActivity() {
 
     @Inject
     lateinit var localPreferences: LocalPreferences
+
+    @Inject
+    lateinit var dotReminder: DotReminder
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -153,7 +157,9 @@ class DotsActivity : AppCompatActivity() {
     }
 
     private fun setDotArchived(dot: Dot, isArchived: Boolean) {
+        dotReminder.removeReminder(dot)
         dot.isArchived = isArchived
+        dot.resetReminder()
         saveDot(dot)
     }
 

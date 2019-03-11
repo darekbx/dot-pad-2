@@ -1,4 +1,4 @@
-package com.dotpad2.dotdialog
+package com.dotpad2.dot
 
 import android.content.ContentValues
 import com.dotpad2.model.Dot
@@ -87,11 +87,12 @@ class DotReminder(val context: Context, val localPreferences: LocalPreferences) 
     private fun fetchCalendarId(): Long? {
         var calendarId: Long? = null
 
+        val userEmail = localPreferences.getEmailAddress()
         val cursor = contentResolver.query(
             CalendarContract.Calendars.CONTENT_URI,
             arrayOf(CalendarContract.Calendars._ID),
-            "${CalendarContract.Calendars.ACCOUNT_NAME} = ?",
-            arrayOf(localPreferences.getEmailAddress()),
+            "${CalendarContract.Calendars.ACCOUNT_NAME} = ? AND ${CalendarContract.Calendars.CALENDAR_DISPLAY_NAME} = ?",
+            arrayOf(userEmail, userEmail),
             null
         )
 

@@ -3,6 +3,9 @@
     <string name="permissions_are_required">Permissions are required for reminders.</string>
     <string name="account_is_required">Account is required for reminders.</string>
     <string name="cant_add_reminder">Please accept all permissions and select account to add reminder.</string>
+    <string name="delete_reminder">Delete reminder?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
     <string name="title_archive">Archive</string>
     <string name="title_statistics">Statistics</string>

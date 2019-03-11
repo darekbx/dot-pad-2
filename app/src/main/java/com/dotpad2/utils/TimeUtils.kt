@@ -3,10 +3,17 @@ package com.dotpad2.utils
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
+import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
 object TimeUtils {
+
+    val DATE_FORMAT = "yyyy-MM-dd HH:mm"
+
+    fun formattedDate(createdDate: Long) = dateFormatter.format(Date(createdDate))
+
+    val dateFormatter by lazy { SimpleDateFormat(DATE_FORMAT) }
 
     fun calculateTimeAgo(createdTime: Long): String {
         val currentTime = Calendar.getInstance().timeInMillis

@@ -1,4 +1,4 @@
-package com.dotpad2.dotdialog.colorselect
+package com.dotpad2.dot.colorselect
 
 import android.content.Context
 import android.graphics.*

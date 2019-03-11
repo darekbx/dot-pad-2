@@ -1,7 +1,7 @@
 package com.dotpad2.di
 
 import com.dotpad2.di.viewmodels.ViewModelModule
-import com.dotpad2.dotdialog.DotDialog
+import com.dotpad2.dot.DotDialog
 import com.dotpad2.dots.DotsActivity
 import com.dotpad2.dots.list.DotsListFragment
 import dagger.Component

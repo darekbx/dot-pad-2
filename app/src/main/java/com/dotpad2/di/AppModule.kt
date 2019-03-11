@@ -2,7 +2,7 @@ package com.dotpad2.di
 
 import android.content.Context
 import com.dotpad2.DotPadApplication
-import com.dotpad2.dotdialog.DotReminder
+import com.dotpad2.dot.DotReminder
 import com.dotpad2.repository.LocalPreferences
 import com.dotpad2.repository.Repository
 import com.dotpad2.repository.local.AppDatabase

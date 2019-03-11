@@ -1,4 +1,4 @@
-package com.dotpad2.dotdialog.sizeselect
+package com.dotpad2.dot.sizeselect
 
 import android.content.Context
 import android.view.LayoutInflater

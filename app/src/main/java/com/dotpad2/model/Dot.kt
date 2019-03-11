@@ -1,7 +1,7 @@
 package com.dotpad2.model
 
 import android.graphics.Point
-import java.text.SimpleDateFormat
+import com.dotpad2.utils.TimeUtils
 import java.util.*
 
 class Dot(
@@ -18,13 +18,13 @@ class Dot(
     var calendarReminderId: Long? = null
 ) {
 
-    companion object {
-        val DATE_FORMAT = "yyyy-MM-dd HH:mm"
+    fun formattedDate() = TimeUtils.formattedDate(createdDate)
+
+    fun resetReminder() {
+        reminder = null
+        calendarEventId = null
+        calendarReminderId = null
     }
-
-    fun formattedDate() = dateFormatter.format(Date(createdDate))
-
-    val dateFormatter by lazy { SimpleDateFormat(DATE_FORMAT) }
 
     val hasReminder: Boolean
         get() = reminder != null
