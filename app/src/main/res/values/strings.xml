@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Dot Pad 2</string>
+    <string name="permissions_are_required">Permissions are required for reminders.</string>
+    <string name="account_is_required">Account is required for reminders.</string>
+    <string name="cant_add_reminder">Please accept all permissions and select account to add reminder.</string>
 
     <string name="title_archive">Archive</string>
     <string name="title_statistics">Statistics</string>
@@ -8,7 +11,6 @@
     <string name="dot_text_hint">Enter note</string>
     <string name="dot_no_reminder">No reminder</string>
     <string name="dot_is_sticked">Sticked</string>
-
     <string name="dot_deleted_message">Deleted: %s</string>
     <string name="dot_deleted_undo">Undo</string>
 </resources>

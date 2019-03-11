@@ -1,11 +1,11 @@
-package com.dotpad2.ui.dotdialog.sizeselect
+package com.dotpad2.dotdialog.sizeselect
 
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import com.dotpad2.R
 import com.dotpad2.model.SizeWrapper
-import com.dotpad2.ui.dotdialog.colorselect.ColorView
+import com.dotpad2.dotdialog.colorselect.ColorView
 
 class SizeView(context: Context, attributeSet: AttributeSet) : ColorView(context, attributeSet) {
 

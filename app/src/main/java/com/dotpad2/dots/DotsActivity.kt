@@ -1,5 +1,8 @@
-package com.dotpad2.ui.dots
+package com.dotpad2.dots
 
+import android.accounts.AccountManager
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.database.DataSetObserver
 import android.graphics.Point
 import android.os.Bundle
@@ -12,10 +15,14 @@ import androidx.lifecycle.ViewModelProviders
 import com.dotpad2.DotPadApplication
 import com.dotpad2.R
 import com.dotpad2.model.Dot
-import com.dotpad2.ui.dotdialog.DotDialog
-import com.dotpad2.ui.dotdialog.setDialogArguments
-import com.dotpad2.ui.dots.list.DotsListFragment
+import com.dotpad2.dotdialog.DotDialog
+import com.dotpad2.dotdialog.setDialogArguments
+import com.dotpad2.dots.list.DotsListFragment
+import com.dotpad2.repository.LocalPreferences
+import com.dotpad2.utils.PermissionsHelper
 import com.dotpad2.viewmodels.DotViewModel
+import com.google.android.gms.auth.GoogleAuthUtil
+import com.google.android.gms.common.AccountPicker
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -23,6 +30,16 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class DotsActivity : AppCompatActivity() {
+
+    companion object {
+        val REQUEST_CODE_EMAIL = 2000
+    }
+
+    @Inject
+    lateinit var permissionsHelper: PermissionsHelper
+
+    @Inject
+    lateinit var localPreferences: LocalPreferences
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -41,13 +58,59 @@ class DotsActivity : AppCompatActivity() {
             dotAdapter.addAll(dots)
         })
 
+        addDotListFragment()
+        handleEmailAddress()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        handlePermissions()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == PermissionsHelper.PERMISSIONS_REQUEST_CODE) {
+            val anyDenied = grantResults.any { it == PackageManager.PERMISSION_DENIED }
+            if (anyDenied) {
+                Snackbar.make(dotBoard, R.string.permissions_are_required, Snackbar.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == REQUEST_CODE_EMAIL) {
+            when (resultCode) {
+                RESULT_OK -> {
+                    val email = data?.getStringExtra(AccountManager.KEY_ACCOUNT_NAME)
+                    email?.let {
+                        localPreferences.saveEmailAddress(email)
+                    }
+                }
+                else -> {
+                    Snackbar.make(dotBoard, R.string.account_is_required, Snackbar.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    private fun handleEmailAddress() {
+        if (localPreferences.getEmailAddress()  == null) {
+            val intent = AccountPicker.newChooseAccountIntent(
+                null, null,
+                arrayOf(GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE), false, null, null, null, null
+            )
+            startActivityForResult(intent, REQUEST_CODE_EMAIL)
+        }
+    }
+
+    private fun addDotListFragment() {
         supportFragmentManager
             .beginTransaction()
             .add(R.id.right_navigation, DotsListFragment())
             .commitAllowingStateLoss()
     }
 
-    fun prepareDotsBoard() {
+    private fun prepareDotsBoard() {
         dotBoard.adapter = dotAdapter
         dotAdapter.registerDataSetObserver(adapterObserver)
         with(dotBoard) {
@@ -69,7 +132,7 @@ class DotsActivity : AppCompatActivity() {
         }
     }
 
-    fun showDotDialog(position: Point? = null, dot: Dot? = null) {
+    private fun showDotDialog(position: Point? = null, dot: Dot? = null) {
         DotDialog().apply {
             setStyle(AppCompatDialogFragment.STYLE_NO_TITLE, 0)
             setDialogArguments(position, dot)
@@ -103,6 +166,13 @@ class DotsActivity : AppCompatActivity() {
     private val adapterObserver = object : DataSetObserver() {
         override fun onChanged() {
             dotBoard.refresh()
+        }
+    }
+
+    private fun handlePermissions() {
+        val hasPermissions = permissionsHelper.checkAllPermissionsGranted(this)
+        if (!hasPermissions) {
+            permissionsHelper.requestPermissions(this)
         }
     }
 

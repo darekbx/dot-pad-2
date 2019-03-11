@@ -1,4 +1,4 @@
-package com.dotpad2.ui.dotdialog.colorselect
+package com.dotpad2.dotdialog.colorselect
 
 import android.content.Context
 import android.util.AttributeSet

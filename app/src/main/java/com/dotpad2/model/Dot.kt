@@ -25,4 +25,7 @@ class Dot(
     fun formattedDate() = dateFormatter.format(Date(createdDate))
 
     val dateFormatter by lazy { SimpleDateFormat(DATE_FORMAT) }
+
+    val hasReminder: Boolean
+        get() = reminder != null
 }

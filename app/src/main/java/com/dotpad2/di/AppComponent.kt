@@ -1,9 +1,9 @@
 package com.dotpad2.di
 
 import com.dotpad2.di.viewmodels.ViewModelModule
-import com.dotpad2.ui.dotdialog.DotDialog
-import com.dotpad2.ui.dots.DotsActivity
-import com.dotpad2.ui.dots.list.DotsListFragment
+import com.dotpad2.dotdialog.DotDialog
+import com.dotpad2.dots.DotsActivity
+import com.dotpad2.dots.list.DotsListFragment
 import dagger.Component
 import javax.inject.Singleton
 

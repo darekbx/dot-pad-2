@@ -1,5 +1,7 @@
-package com.dotpad2.ui.dotdialog
+package com.dotpad2.dotdialog
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Context
 import android.graphics.Point
 import android.os.Bundle
@@ -8,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.DatePicker
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.lifecycle.Observer
@@ -18,11 +21,15 @@ import com.dotpad2.R
 import com.dotpad2.model.ColorWrapper
 import com.dotpad2.model.Dot
 import com.dotpad2.model.SizeWrapper
-import com.dotpad2.ui.dotdialog.colorselect.ColorSelectorAdapter
-import com.dotpad2.ui.dotdialog.colorselect.ColorSelectorView
-import com.dotpad2.ui.dotdialog.sizeselect.SizeSelectorAdapter
-import com.dotpad2.ui.dotdialog.sizeselect.SizeSelectorView
+import com.dotpad2.dotdialog.colorselect.ColorSelectorAdapter
+import com.dotpad2.dotdialog.colorselect.ColorSelectorView
+import com.dotpad2.dotdialog.sizeselect.SizeSelectorAdapter
+import com.dotpad2.dotdialog.sizeselect.SizeSelectorView
+import com.dotpad2.repository.LocalPreferences
+import com.dotpad2.utils.PermissionsHelper
+import com.dotpad2.utils.TimeUtils
 import com.dotpad2.viewmodels.DotViewModel
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -50,10 +57,20 @@ class DotDialog : AppCompatDialogFragment() {
     }
 
     @Inject
+    lateinit var permissionsHelper: PermissionsHelper
+
+    @Inject
+    lateinit var localPreferences: LocalPreferences
+
+    @Inject
+    lateinit var dotReminder: DotReminder
+
+    @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     internal lateinit var dotViewModel: DotViewModel
 
     private var loadedDot: Dot? = null
+    private var reminderTimestamp: Long? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return LayoutInflater.from(context).inflate(R.layout.dialog_dot, container, false)
@@ -117,6 +134,14 @@ class DotDialog : AppCompatDialogFragment() {
         }
     }
 
+    private fun canAddReminder(): Boolean {
+        if (localPreferences.getEmailAddress() == null) return false
+        view?.let {
+            if (permissionsHelper.checkAllPermissionsGranted(it.context) == false) return false
+        }
+        return true
+    }
+
     fun saveClick() {
         view?.run {
             saveTheDot()
@@ -128,7 +153,20 @@ class DotDialog : AppCompatDialogFragment() {
     }
 
     fun reminderClick() {
+        view?.let { view ->
+            if (!canAddReminder()) {
+                Snackbar.make(view, R.string.cant_add_reminder, Snackbar.LENGTH_SHORT).show()
+                return
+            }
 
+           /* if (loadedDot?.hasReminder ?: false) {
+
+                // ask if remove
+
+            } else {*/
+                TimeUtils.requestDateTime(view.context, { reminderTimestamp = it.timeInMillis })
+            //}
+        }
     }
 
     private fun saveTheDot() {
@@ -143,11 +181,23 @@ class DotDialog : AppCompatDialogFragment() {
                 color = colorSelectorView.selectedColor ?: defaultColor
                 isSticked = isStickedView.isChecked
                 position = loadedDot?.position ?: getPosition() ?: Point()
+                reminder = reminderTimestamp
             }
 
             GlobalScope.launch(Dispatchers.Main) {
+                saveReminder(dot)
                 dotViewModel.saveDot(dot)
                 dismiss()
+            }
+        }
+    }
+
+    private fun saveReminder(dot: Dot) {
+        with(dot) {
+            if (hasReminder) {
+                val (eventId, reminderId) = dotReminder.addReminder(this)
+                calendarEventId = eventId
+                calendarReminderId = reminderId
             }
         }
     }

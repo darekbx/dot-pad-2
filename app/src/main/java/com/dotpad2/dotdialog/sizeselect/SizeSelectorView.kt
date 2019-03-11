@@ -1,4 +1,4 @@
-package com.dotpad2.ui.dotdialog.sizeselect
+package com.dotpad2.dotdialog.sizeselect
 
 import android.content.Context
 import android.util.AttributeSet

@@ -1,4 +1,4 @@
-package com.dotpad2.ui.dotdialog.colorselect
+package com.dotpad2.dotdialog.colorselect
 
 import android.content.Context
 import android.graphics.*
@@ -57,7 +57,9 @@ open class ColorView(context: Context, attributeSet: AttributeSet) : View(contex
     }
 
     protected fun drawRect(canvas: Canvas) {
-        canvas.drawRoundRect(viewRect, CORNERS_RADIUS, CORNERS_RADIUS, solidPaint)
+        canvas.drawRoundRect(viewRect,
+            CORNERS_RADIUS,
+            CORNERS_RADIUS, solidPaint)
     }
 
     protected fun drawTick(canvas: Canvas) {
@@ -82,6 +84,9 @@ open class ColorView(context: Context, attributeSet: AttributeSet) : View(contex
     }
 
     private val viewRect by lazy {
-        RectF(OUT_PADDING, OUT_PADDING, width - OUT_PADDING, height - OUT_PADDING)
+        RectF(
+            OUT_PADDING,
+            OUT_PADDING, width - OUT_PADDING, height - OUT_PADDING
+        )
     }
 }

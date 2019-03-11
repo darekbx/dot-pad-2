@@ -1,4 +1,4 @@
-package com.dotpad2.ui.dots
+package com.dotpad2.dots
 
 import android.content.Context
 import android.graphics.Canvas
