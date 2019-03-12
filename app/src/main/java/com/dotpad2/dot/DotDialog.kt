@@ -69,6 +69,7 @@ class DotDialog : AppCompatDialogFragment() {
 
     private var loadedDot: Dot? = null
     private var reminderTimestamp: Long? = null
+    private var reminderChanged = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return LayoutInflater.from(context).inflate(R.layout.dialog_dot, container, false)
@@ -164,6 +165,7 @@ class DotDialog : AppCompatDialogFragment() {
                 confirmDeleteReminder(view)
             } else {
                 TimeUtils.requestDateTime(view.context, {
+                    reminderChanged = true
                     reminderTimestamp = it.timeInMillis
                     reminderView.text = TimeUtils.formattedDate(it.timeInMillis)
                 })
@@ -203,7 +205,7 @@ class DotDialog : AppCompatDialogFragment() {
                 color = colorSelectorView.selectedColor ?: defaultColor
                 isSticked = isStickedView.isChecked
                 position = loadedDot?.position ?: getPosition() ?: Point()
-                reminder = reminderTimestamp
+                reminder = reminderTimestamp ?: loadedDot?.reminder
             }
 
             GlobalScope.launch(Dispatchers.Main) {
@@ -216,7 +218,7 @@ class DotDialog : AppCompatDialogFragment() {
 
     private fun saveReminder(dot: Dot) {
         with(dot) {
-            if (hasReminder) {
+            if (reminderChanged && hasReminder) {
                 val (eventId, reminderId) = dotReminder.addReminder(this)
                 calendarEventId = eventId
                 calendarReminderId = reminderId

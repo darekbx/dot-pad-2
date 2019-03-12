@@ -11,5 +11,6 @@
         app:dotSize="@{dot.size}"
         app:dotColor="@{dot.color}"
         app:dotCreatedDate="@{dot.createdDate}"
+        app:dotReminder="@{dot.reminder}"
     />
 </layout>

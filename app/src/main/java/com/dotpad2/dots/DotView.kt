@@ -1,24 +1,36 @@
 package com.dotpad2.dots
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.Rect
+import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 import com.dotpad2.utils.TimeUtils
+import android.util.Log
+import android.view.MotionEvent
+import com.dotpad2.R
+import java.util.*
 
 class DotView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
 
     companion object {
         val SIZE_RATIO = 16
+        val REMINDER_INNER_PADDING = 6F
     }
 
-    val dotPaint = Paint()
-    val textPaint = Paint()
+    private val dotPaint = Paint()
+    private val textPaint = Paint()
+    private val reminderPaint = Paint()
+    private var dragPaint = Paint()
+
+    var isDragDropEnabled = false
+        set(value) {
+            field = value
+            invalidate()
+        }
+
     var dotCreatedDate: Long = 0L
     var dotSize = 0
+    var dotReminder: Long? = 0L
     var dotColor = 0
         set(value) {
             field = value
@@ -33,17 +45,88 @@ class DotView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
             textSize = 16.0F
             textAlignment = TEXT_ALIGNMENT_CENTER
         }
+        reminderPaint.apply {
+            isAntiAlias = true
+            color = Color.WHITE
+            style = Paint.Style.STROKE
+            strokeWidth = 5F
+        }
+        dragPaint.apply {
+            isAntiAlias = true
+            color = context.getColor(R.color.colorPrimary)
+            style = Paint.Style.STROKE
+            strokeWidth = DotBoardView.DRAG_PADDING
+            pathEffect = setPathEffect(DashPathEffect(floatArrayOf(40f, 40f), 20f))
+        }
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        if (isDragDropEnabled) {
+            event?.let {
+                if (it.action == MotionEvent.ACTION_MOVE) {
+
+                    this.x = event.rawX - width
+                    this.y = event.rawY - height
+
+
+                    // TODO: save new position of the dot
+
+                }
+            }
+        }
+
+        return super.onTouchEvent(event)
     }
 
     override fun onDraw(canvas: Canvas?) {
         canvas?.run {
             drawDotCircle(canvas)
             drawDotCreatedAgo(canvas)
+            drawDotReminder(canvas)
+            if (isDragDropEnabled) {
+                val x = width / 2F
+                val y = height / 2F
+                val radius = dotSize() / 2F - 2f
+                canvas.drawCircle(x, y, radius, dragPaint)
+            }
         }
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         setMeasuredDimension(dotSize(), dotSize())
+    }
+
+    private fun drawDotReminder(canvas: Canvas) {
+        dotReminder?.takeIf { it > 0 }?.let { dotReminder ->
+
+            val now = Calendar.getInstance().getTimeInMillis()
+            val minutesRemianingSpan = (dotReminder - now)
+            val minutesSpan = (dotReminder - dotCreatedDate)
+            val percent = (minutesSpan - minutesRemianingSpan) * 100F / Math.max(1, minutesSpan)
+
+            drawPart(canvas, percent)
+        }
+    }
+
+    private fun drawPart(canvas: Canvas, percent: Float) {
+        val x = width / 2F
+        val y = height / 2F
+        with(canvas) {
+            save()
+            rotate(-90f, x, y)
+
+            drawArc(
+                RectF(
+                    REMINDER_INNER_PADDING,
+                    REMINDER_INNER_PADDING,
+                    (dotSize() - REMINDER_INNER_PADDING),
+                    (dotSize() - REMINDER_INNER_PADDING)
+                ),
+                0f, percent * 3.6f, false, reminderPaint
+            )
+
+            restore()
+        }
     }
 
     private fun drawDotCircle(canvas: Canvas) {
