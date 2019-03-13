@@ -25,6 +25,9 @@ interface DotsDao {
     @Query("UPDATE dots SET is_archived = :isArchived WHERE id = :dotId")
     fun markDotArchived(dotId: Long, isArchived: Boolean)
 
+    @Query("UPDATE dots SET position_x = :x, position_y = :y WHERE id = :dotId")
+    fun updateDotPosition(dotId: Long?, x: Int, y: Int)
+
     @Update
     fun update(dotDto: DotDto)
 }

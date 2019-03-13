@@ -133,6 +133,14 @@ class DotsActivity : AppCompatActivity() {
                     deleteDot(dot)
                 }
             }
+            saveDotPositionCallback= object : (Dot) -> Unit {
+                override fun invoke(dot: Dot) {
+
+                    kotlinx.coroutines.GlobalScope.launch(kotlinx.coroutines.Dispatchers.Main) {
+                        dotViewModel.saveDotPosition(dot)
+                    }
+                }
+            }
         }
     }
 

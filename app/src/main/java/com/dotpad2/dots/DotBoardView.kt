@@ -23,6 +23,7 @@ class DotBoardView(context: Context, attrs: AttributeSet?)
     var openDotCallback: ((dot: Dot) -> Unit)? = null
     var deleteDotCallback: ((dot: Dot) -> Unit)? = null
     var newDotCallback: ((position: Point) -> Unit)? = null
+    var saveDotPositionCallback: ((dot:Dot) -> Unit)? = null
 
     private var dragPaint = Paint().apply {
         isAntiAlias = true
@@ -129,6 +130,12 @@ class DotBoardView(context: Context, attrs: AttributeSet?)
             val child = getChildAt(dotIndex)
             if (child is DotView) {
                 child.isDragDropEnabled = isDragDropEnabled
+
+                if (!isDragDropEnabled) {
+                    val dot = adapter.getItem(dotIndex)
+                    dot.position = Point(child.x.toInt(), child.y.toInt())
+                    saveDotPositionCallback?.invoke(dot)
+                }
             }
         }
     }

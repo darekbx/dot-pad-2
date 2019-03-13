@@ -25,6 +25,12 @@ class DotViewModel @Inject constructor(private val repository: Repository) : Vie
         job.cancel()
     }
 
+    suspend fun saveDotPosition(dot: Dot) {
+        GlobalScope.async {
+            repository.updatePosition(dot)
+        }.await()
+    }
+
     suspend fun saveDot(dot: Dot) {
         GlobalScope.async {
             when (dot.id) {

@@ -21,6 +21,10 @@ class Repository(private val dotsDao: DotsDao) {
         dotsDao.add(dotDto)
     }
 
+    fun updatePosition(dot: Dot) {
+        dotsDao.updateDotPosition(dot.id, dot.position.x, dot.position.y)
+    }
+
     fun update(dot: Dot) {
         val dotDto = Mappers.dtoToDotDto(dot)
         dotsDao.update(dotDto)

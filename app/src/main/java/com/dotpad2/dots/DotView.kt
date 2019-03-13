@@ -62,20 +62,17 @@ class DotView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         if (isDragDropEnabled) {
-            event?.let {
-                if (it.action == MotionEvent.ACTION_MOVE) {
-
-                    this.x = event.rawX - width
-                    this.y = event.rawY - height
-
-
-                    // TODO: save new position of the dot
-
-                }
-            }
+            event?.let { makeDragDrop(it, event) }
         }
 
         return super.onTouchEvent(event)
+    }
+
+    private fun makeDragDrop(it: MotionEvent, event: MotionEvent) {
+        if (it.action == MotionEvent.ACTION_MOVE) {
+            this.x = event.rawX - width
+            this.y = event.rawY - height
+        }
     }
 
     override fun onDraw(canvas: Canvas?) {
@@ -83,12 +80,6 @@ class DotView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
             drawDotCircle(canvas)
             drawDotCreatedAgo(canvas)
             drawDotReminder(canvas)
-            if (isDragDropEnabled) {
-                val x = width / 2F
-                val y = height / 2F
-                val radius = dotSize() / 2F - 2f
-                canvas.drawCircle(x, y, radius, dragPaint)
-            }
         }
     }
 
