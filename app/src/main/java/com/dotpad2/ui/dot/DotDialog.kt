@@ -1,4 +1,4 @@
-package com.dotpad2.dot
+package com.dotpad2.ui.dot
 
 import android.content.Context
 import android.graphics.Point
@@ -6,9 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.lifecycle.Observer
@@ -19,15 +16,17 @@ import com.dotpad2.DotPadApplication
 import com.dotpad2.model.ColorWrapper
 import com.dotpad2.model.Dot
 import com.dotpad2.model.SizeWrapper
-import com.dotpad2.dot.colorselect.ColorSelectorAdapter
-import com.dotpad2.dot.colorselect.ColorSelectorView
-import com.dotpad2.dot.sizeselect.SizeSelectorAdapter
-import com.dotpad2.dot.sizeselect.SizeSelectorView
+import com.dotpad2.ui.dot.colorselect.ColorSelectorAdapter
+import com.dotpad2.ui.dot.colorselect.ColorSelectorView
+import com.dotpad2.ui.dot.sizeselect.SizeSelectorAdapter
+import com.dotpad2.ui.dot.sizeselect.SizeSelectorView
 import com.dotpad2.repository.LocalPreferences
 import com.dotpad2.utils.PermissionsHelper
 import com.dotpad2.utils.TimeUtils
 import com.dotpad2.viewmodels.DotViewModel
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.dialog_dot.*
+import kotlinx.android.synthetic.main.dialog_dot.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -98,12 +97,12 @@ class DotDialog : AppCompatDialogFragment() {
     }
 
     private fun udpateViews(dot: Dot) {
-        noteView.setText(dot.text)
-        isStickedView.isChecked = dot.isSticked
-        colorSelectorView.selectedColor = dot.color
-        sizeSelectorView.selectedSize = dot.size
+        dot_note.setText(dot.text)
+        dot_is_sticked.isChecked = dot.isSticked
+        color_selector.selectedColor = dot.color
+        size_selector.selectedSize = dot.size
         dot.reminder?.run {
-            reminderView.text = TimeUtils.formattedDate(this)
+            dot_reminder.text = TimeUtils.formattedDate(this)
         }
     }
 
@@ -131,8 +130,8 @@ class DotDialog : AppCompatDialogFragment() {
 
     private fun prepareResetButton() {
         if (loadedDot != null) {
-            resetButton.setOnClickListener { resetClick() }
-            resetButton.visibility = View.VISIBLE
+            reset_button.setOnClickListener { resetClick() }
+            reset_button.visibility = View.VISIBLE
         }
     }
 
@@ -167,7 +166,7 @@ class DotDialog : AppCompatDialogFragment() {
                 TimeUtils.requestDateTime(view.context, {
                     reminderChanged = true
                     reminderTimestamp = it.timeInMillis
-                    reminderView.text = TimeUtils.formattedDate(it.timeInMillis)
+                    dot_reminder.text = TimeUtils.formattedDate(it.timeInMillis)
                 })
             }
         }
@@ -188,7 +187,7 @@ class DotDialog : AppCompatDialogFragment() {
             loadedDot.resetReminder()
             GlobalScope.launch(Dispatchers.Main) {
                 dotViewModel.saveDot(loadedDot)
-                reminderView.text = getString(R.string.dot_no_reminder)
+                dot_reminder.text = getString(R.string.dot_no_reminder)
             }
         }
     }
@@ -200,10 +199,10 @@ class DotDialog : AppCompatDialogFragment() {
             val dot = loadedDot ?: Dot()
 
             with (dot) {
-                text = noteView.text.toString()
-                size = sizeSelectorView.selectedSize ?: defaultSize
-                color = colorSelectorView.selectedColor ?: defaultColor
-                isSticked = isStickedView.isChecked
+                text = dot_note.text.toString()
+                size = size_selector.selectedSize ?: defaultSize
+                color = color_selector.selectedColor ?: defaultColor
+                isSticked = dot_is_sticked.isChecked
                 position = loadedDot?.position ?: getPosition() ?: Point()
                 reminder = reminderTimestamp ?: loadedDot?.reminder
             }
@@ -275,10 +274,4 @@ class DotDialog : AppCompatDialogFragment() {
 
     private fun provideSizes() = arrayOf(10, 8, 6, 5)
 
-    private val noteView by lazy { view?.findViewById(R.id.dot_note) as EditText }
-    private val reminderView by lazy { view?.findViewById(R.id.dot_reminder) as TextView }
-    private val isStickedView by lazy { view?.findViewById(R.id.dot_is_sticked) as CheckBox }
-    private val colorSelectorView by lazy { view?.findViewById(R.id.color_selector) as ColorSelectorView }
-    private val sizeSelectorView by lazy { view?.findViewById(R.id.size_selector) as SizeSelectorView }
-    private val resetButton by lazy { view?.findViewById(R.id.reset_button) as View }
 }

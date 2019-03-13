@@ -28,6 +28,4 @@ class Dot(
 
     val hasReminder: Boolean
         get() = reminder != null
-
-
 }

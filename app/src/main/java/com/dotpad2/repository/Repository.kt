@@ -30,9 +30,9 @@ class Repository(private val dotsDao: DotsDao) {
         dotsDao.update(dotDto)
     }
 
-    fun markDotArchived(dotId: Long, isArchived: Boolean) {
-        dotsDao.markDotArchived(dotId, isArchived)
-    }
+    fun fetchSizeStatistics() = dotsDao.sizeStatistics()
+
+    fun fetchColorStatistics() = dotsDao.colorStatistics()
 
     private fun mapDotDtosToDots(dotDtos: List<DotDto>) =
         dotDtos.map { dotDto -> Mappers.dtoDtoToDot(dotDto) }

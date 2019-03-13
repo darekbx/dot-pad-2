@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import com.dotpad2.model.StatisticsValue
 import com.dotpad2.repository.local.entities.DotDto
 
 @Dao
@@ -22,11 +23,14 @@ interface DotsDao {
     @Query("SELECT * FROM dots ORDER BY created_date DESC LIMIT :limit OFFSET :offset")
     fun fetchAll(limit: Int, offset: Int): LiveData<List<DotDto>>
 
-    @Query("UPDATE dots SET is_archived = :isArchived WHERE id = :dotId")
-    fun markDotArchived(dotId: Long, isArchived: Boolean)
-
     @Query("UPDATE dots SET position_x = :x, position_y = :y WHERE id = :dotId")
     fun updateDotPosition(dotId: Long?, x: Int, y: Int)
+
+    @Query("SELECT COUNT(size) AS occurrences, size AS value FROM dots GROUP BY size")
+    fun sizeStatistics(): LiveData<List<StatisticsValue>>
+
+    @Query("SELECT COUNT(color) AS occurrences, color AS value FROM dots GROUP BY color")
+    fun colorStatistics(): LiveData<List<StatisticsValue>>
 
     @Update
     fun update(dotDto: DotDto)

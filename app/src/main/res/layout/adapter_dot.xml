@@ -5,7 +5,7 @@
     <data>
         <variable name="dot" type="com.dotpad2.model.Dot" />
     </data>
-    <com.dotpad2.dots.DotView
+    <com.dotpad2.ui.dots.DotView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:dotSize="@{dot.size}"

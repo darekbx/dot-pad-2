@@ -1,4 +1,4 @@
-package com.dotpad2.dots.list
+package com.dotpad2.ui.dots.list
 
 import com.dotpad2.R
 import android.os.Bundle

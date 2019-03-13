@@ -1,4 +1,4 @@
-package com.dotpad2.dot
+package com.dotpad2.ui.dot
 
 import android.content.ContentValues
 import com.dotpad2.model.Dot

@@ -1,4 +1,4 @@
-package com.dotpad2.dot.colorselect
+package com.dotpad2.ui.dot.colorselect
 
 import android.content.Context
 import android.view.LayoutInflater

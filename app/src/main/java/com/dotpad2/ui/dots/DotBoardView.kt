@@ -1,4 +1,4 @@
-package com.dotpad2.dots
+package com.dotpad2.ui.dots
 
 import android.content.Context
 import android.graphics.*
@@ -8,8 +8,6 @@ import android.view.MotionEvent
 import android.widget.AdapterView
 import com.dotpad2.model.Dot
 import android.graphics.DashPathEffect
-
-
 
 class DotBoardView(context: Context, attrs: AttributeSet?)
     : AdapterView<DotAdapter>(context, attrs) {
@@ -64,7 +62,8 @@ class DotBoardView(context: Context, attrs: AttributeSet?)
     private fun markDragDropActive(canvas: Canvas?) {
         if (isDragDropEnabled) {
             canvas?.drawRect(
-                DRAG_PADDING, DRAG_PADDING,
+                DRAG_PADDING,
+                DRAG_PADDING,
                 width - DRAG_PADDING * 2, height - DRAG_PADDING * 2,
                 dragPaint
             )
@@ -94,7 +93,7 @@ class DotBoardView(context: Context, attrs: AttributeSet?)
             setOnClickListener { openDot(dot) }
             setOnLongClickListener {
                 deleteDot(dot)
-                true
+                false
             }
         }
 
@@ -126,17 +125,24 @@ class DotBoardView(context: Context, attrs: AttributeSet?)
     }
 
     private fun notifyDragDropEnabled() {
-        for (dotIndex in 0 until childCount) {
-            val child = getChildAt(dotIndex)
-            if (child is DotView) {
-                child.isDragDropEnabled = isDragDropEnabled
+        childLoop { dot, dotView -> dotView.isDragDropEnabled = isDragDropEnabled }
+    }
 
-                if (!isDragDropEnabled) {
-                    val dot = adapter.getItem(dotIndex)
-                    dot.position = Point(child.x.toInt(), child.y.toInt())
-                    saveDotPositionCallback?.invoke(dot)
-                }
-            }
+    private fun updateDotsPositions() {
+        if (isDragDropEnabled) {
+            return
+        }
+        childLoop { dot, dotView ->
+            dot.position = Point(dotView.x.toInt(), dotView.y.toInt())
+            saveDotPositionCallback?.invoke(dot)
+        }
+    }
+
+    private fun childLoop(callback: (dot: Dot, dotView: DotView) -> Unit) {
+        for (dotIndex in 0 until childCount) {
+            val child = getChildAt(dotIndex) as DotView
+            val dot = adapter.getItem(dotIndex)
+            callback(dot, child)
         }
     }
 
@@ -160,6 +166,7 @@ class DotBoardView(context: Context, attrs: AttributeSet?)
         override fun onLongPress(e: MotionEvent?) {
             isDragDropEnabled = !isDragDropEnabled
             notifyDragDropEnabled()
+            updateDotsPositions()
             invalidate()
         }
 

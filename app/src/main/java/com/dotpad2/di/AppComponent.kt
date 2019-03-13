@@ -1,9 +1,10 @@
 package com.dotpad2.di
 
 import com.dotpad2.di.viewmodels.ViewModelModule
-import com.dotpad2.dot.DotDialog
-import com.dotpad2.dots.DotsActivity
-import com.dotpad2.dots.list.DotsListFragment
+import com.dotpad2.ui.dot.DotDialog
+import com.dotpad2.ui.dots.DotsActivity
+import com.dotpad2.ui.dots.list.DotsListFragment
+import com.dotpad2.ui.statistics.StatisticsActivity
 import dagger.Component
 import javax.inject.Singleton
 
@@ -11,7 +12,8 @@ import javax.inject.Singleton
 @Component(modules = arrayOf(AppModule::class, DatabaseModule::class, ViewModelModule::class))
 interface AppComponent {
 
-    fun inject(activity: DotsActivity)
+    fun inject(dotsActivity: DotsActivity)
     fun inject(dotDialog: DotDialog)
     fun inject(listFragment: DotsListFragment)
+    fun inject(statisticsActivity: StatisticsActivity)
 }

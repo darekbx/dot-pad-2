@@ -1,4 +1,4 @@
-package com.dotpad2.dots
+package com.dotpad2.ui.dots
 
 import android.accounts.AccountManager
 import android.content.Intent
@@ -7,6 +7,7 @@ import android.database.DataSetObserver
 import android.graphics.Point
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.lifecycle.Observer
@@ -15,16 +16,18 @@ import androidx.lifecycle.ViewModelProviders
 import com.dotpad2.DotPadApplication
 import com.dotpad2.R
 import com.dotpad2.model.Dot
-import com.dotpad2.dot.DotDialog
-import com.dotpad2.dot.DotReminder
-import com.dotpad2.dot.setDialogArguments
-import com.dotpad2.dots.list.DotsListFragment
+import com.dotpad2.ui.dot.DotDialog
+import com.dotpad2.ui.dot.DotReminder
+import com.dotpad2.ui.dot.setDialogArguments
+import com.dotpad2.ui.dots.list.DotsListFragment
 import com.dotpad2.repository.LocalPreferences
+import com.dotpad2.ui.statistics.StatisticsActivity
 import com.dotpad2.utils.PermissionsHelper
 import com.dotpad2.viewmodels.DotViewModel
 import com.google.android.gms.auth.GoogleAuthUtil
 import com.google.android.gms.common.AccountPicker
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.activity_dots.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -76,7 +79,7 @@ class DotsActivity : AppCompatActivity() {
         if (requestCode == PermissionsHelper.PERMISSIONS_REQUEST_CODE) {
             val anyDenied = grantResults.any { it == PackageManager.PERMISSION_DENIED }
             if (anyDenied) {
-                Snackbar.make(dotBoard, R.string.permissions_are_required, Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(dot_board, R.string.permissions_are_required, Snackbar.LENGTH_SHORT).show()
             }
         }
     }
@@ -91,7 +94,7 @@ class DotsActivity : AppCompatActivity() {
                     }
                 }
                 else -> {
-                    Snackbar.make(dotBoard, R.string.account_is_required, Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(dot_board, R.string.account_is_required, Snackbar.LENGTH_SHORT).show()
                 }
             }
         }
@@ -115,9 +118,9 @@ class DotsActivity : AppCompatActivity() {
     }
 
     private fun prepareDotsBoard() {
-        dotBoard.adapter = dotAdapter
+        dot_board.adapter = dotAdapter
         dotAdapter.registerDataSetObserver(adapterObserver)
-        with(dotBoard) {
+        with(dot_board) {
             newDotCallback = object : (Point) -> Unit {
                 override fun invoke(position: Point) {
                     showDotDialog(position)
@@ -133,10 +136,9 @@ class DotsActivity : AppCompatActivity() {
                     deleteDot(dot)
                 }
             }
-            saveDotPositionCallback= object : (Dot) -> Unit {
+            saveDotPositionCallback = object : (Dot) -> Unit {
                 override fun invoke(dot: Dot) {
-
-                    kotlinx.coroutines.GlobalScope.launch(kotlinx.coroutines.Dispatchers.Main) {
+                    GlobalScope.launch(Dispatchers.Main) {
                         dotViewModel.saveDotPosition(dot)
                     }
                 }
@@ -156,10 +158,19 @@ class DotsActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        item?.let {
+            when(item.itemId) {
+                R.id.navigation_statistics -> startActivity(Intent(this,  StatisticsActivity::class.java))
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     private fun deleteDot(dot: Dot) {
         setDotArchived(dot, true)
         Snackbar
-            .make(dotBoard, getString(R.string.dot_deleted_message, dot.text), Snackbar.LENGTH_LONG)
+            .make(dot_board, getString(R.string.dot_deleted_message, dot.text), Snackbar.LENGTH_LONG)
             .setAction(R.string.dot_deleted_undo, { setDotArchived(dot, false) })
             .show()
     }
@@ -179,7 +190,7 @@ class DotsActivity : AppCompatActivity() {
 
     private val adapterObserver = object : DataSetObserver() {
         override fun onChanged() {
-            dotBoard.refresh()
+            dot_board.refresh()
         }
     }
 
@@ -190,6 +201,5 @@ class DotsActivity : AppCompatActivity() {
         }
     }
 
-    private val dotBoard by lazy { findViewById(R.id.dot_board) as DotBoardView }
     private val dotAdapter by lazy { DotAdapter(this) }
 }

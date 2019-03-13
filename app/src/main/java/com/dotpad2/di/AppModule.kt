@@ -2,7 +2,7 @@ package com.dotpad2.di
 
 import android.content.Context
 import com.dotpad2.DotPadApplication
-import com.dotpad2.dot.DotReminder
+import com.dotpad2.ui.dot.DotReminder
 import com.dotpad2.repository.LocalPreferences
 import com.dotpad2.repository.Repository
 import com.dotpad2.repository.local.AppDatabase
@@ -29,7 +29,7 @@ class AppModule(val application: DotPadApplication) {
 
     @Provides
     fun dotReminder(context: Context, localPreferences: LocalPreferences)
-            = DotReminder(context,  localPreferences)
+            = DotReminder(context, localPreferences)
 
     @Provides
     fun provideRepository(appDatabase: AppDatabase): Repository =

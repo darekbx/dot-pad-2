@@ -21,7 +21,6 @@ class DotViewModel @Inject constructor(private val repository: Repository) : Vie
 
     override fun onCleared() {
         super.onCleared()
-
         job.cancel()
     }
 

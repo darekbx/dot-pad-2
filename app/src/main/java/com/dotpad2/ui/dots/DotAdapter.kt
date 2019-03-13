@@ -1,4 +1,4 @@
-package com.dotpad2.dots
+package com.dotpad2.ui.dots
 
 import android.content.Context
 import android.view.LayoutInflater

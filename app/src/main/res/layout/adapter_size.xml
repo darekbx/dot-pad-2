@@ -4,7 +4,7 @@
     <data>
         <variable name="item" type="com.dotpad2.model.SizeWrapper" />
     </data>
-    <com.dotpad2.dot.sizeselect.SizeView
+    <com.dotpad2.ui.dot.sizeselect.SizeView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:sizeWrapper="@{item}"
