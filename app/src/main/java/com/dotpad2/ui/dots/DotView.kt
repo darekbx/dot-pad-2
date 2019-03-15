@@ -28,6 +28,7 @@ class DotView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
             invalidate()
         }
 
+    var dotIsSticked: Boolean = false
     var dotCreatedDate: Long = 0L
     var dotSize = 0
     var dotReminder: Long? = 0L
@@ -77,6 +78,11 @@ class DotView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
 
     override fun onDraw(canvas: Canvas?) {
         canvas?.run {
+            if (dotIsSticked) {
+                dotPaint.alpha = 123
+                textPaint.alpha = 123
+                reminderPaint.alpha = 123
+            }
             drawDotCircle(canvas)
             drawDotCreatedAgo(canvas)
             drawDotReminder(canvas)

@@ -12,5 +12,6 @@
         app:dotColor="@{dot.color}"
         app:dotCreatedDate="@{dot.createdDate}"
         app:dotReminder="@{dot.reminder}"
+        app:dotIsSticked="@{dot.isSticked}"
     />
 </layout>
