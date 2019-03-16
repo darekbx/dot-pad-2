@@ -8,6 +8,7 @@ import android.view.MotionEvent
 import android.widget.AdapterView
 import com.dotpad2.model.Dot
 import android.graphics.DashPathEffect
+import com.dotpad2.R
 
 class DotBoardView(context: Context, attrs: AttributeSet?)
     : AdapterView<DotAdapter>(context, attrs) {
@@ -29,6 +30,14 @@ class DotBoardView(context: Context, attrs: AttributeSet?)
         style = Paint.Style.STROKE
         strokeWidth = DRAG_PADDING
         pathEffect = setPathEffect(DashPathEffect(floatArrayOf(40f, 40f), 10f))
+    }
+
+    private var areaPaint = Paint().apply {
+        isAntiAlias = true
+        color = context.getColor(R.color.grey)
+        style = Paint.Style.STROKE
+        strokeWidth = DRAG_PADDING
+        pathEffect = setPathEffect(DashPathEffect(floatArrayOf(20f, 20f), 5f))
     }
 
     private var isDragDropEnabled = false
@@ -57,6 +66,7 @@ class DotBoardView(context: Context, attrs: AttributeSet?)
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         markDragDropActive(canvas)
+        drawAreas(canvas)
     }
 
     private fun markDragDropActive(canvas: Canvas?) {
@@ -67,6 +77,14 @@ class DotBoardView(context: Context, attrs: AttributeSet?)
                 width - DRAG_PADDING * 2, height - DRAG_PADDING * 2,
                 dragPaint
             )
+        }
+    }
+
+    private fun drawAreas(canvas: Canvas?) {
+        canvas?.run {
+            drawCircle(0F, 0F, areaDaySize.toFloat(), areaPaint)
+            drawCircle(0F, 0F, areaWeekSize.toFloat(), areaPaint)
+            drawCircle(0F, 0F, areaYearSize.toFloat(), areaPaint)
         }
     }
 
@@ -146,7 +164,11 @@ class DotBoardView(context: Context, attrs: AttributeSet?)
         }
     }
 
-    val gestureDetector = GestureDetector(context, object : GestureDetector.OnGestureListener {
+    private val areaDaySize by lazy { context.resources.getDimensionPixelSize(R.dimen.areaDay) }
+    private val areaWeekSize by lazy { context.resources.getDimensionPixelSize(R.dimen.areaWeek) }
+    private val areaYearSize by lazy { context.resources.getDimensionPixelSize(R.dimen.areaYear) }
+
+    private val gestureDetector = GestureDetector(context, object : GestureDetector.OnGestureListener {
 
         override fun onShowPress(e: MotionEvent?) {
         }

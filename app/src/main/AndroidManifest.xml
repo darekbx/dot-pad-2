@@ -27,10 +27,17 @@
                 android:name=".ui.statistics.StatisticsActivity"
                 android:label="@string/app_name"
                 android:screenOrientation="portrait">
-
-        <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.dots.DotsActivity" />
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".ui.dots.DotsActivity" />
+        </activity>
+        <activity
+                android:name=".ui.archive.ArchiveActivity"
+                android:label="@string/app_name"
+                android:screenOrientation="portrait">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".ui.dots.DotsActivity" />
         </activity>
     </application>
 
