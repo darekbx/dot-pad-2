@@ -245,6 +245,7 @@ class DotDialog : AppCompatDialogFragment() {
     private fun addSizes(sizeAdapter: SizeSelectorAdapter) {
         val sizes = provideSizes().map { SizeWrapper(it) }
         sizes.first().selected = true
+        sizeAdapter.clear()
         sizeAdapter.addAll(sizes)
     }
 
@@ -258,6 +259,7 @@ class DotDialog : AppCompatDialogFragment() {
     private fun addColors(context: Context, colorAdapter: ColorSelectorAdapter) {
         val colors = provideColors(context).map { ColorWrapper(it) }
         colors.first().selected = true
+        colorAdapter.clear()
         colorAdapter.addAll(colors)
     }
 

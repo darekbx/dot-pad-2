@@ -14,7 +14,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:lines="10"
-        android:inputType="textMultiLine"
+        android:inputType="textMultiLine|textCapSentences"
         android:textSize="14sp"
         android:hint="@string/dot_text_hint"
         android:gravity="top|start"
@@ -59,8 +59,9 @@
         />
     <com.dotpad2.ui.dot.sizeselect.SizeSelectorView
         android:id="@+id/size_selector"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/color_selector"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="@dimen/paddingIn"
@@ -104,7 +105,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="@dimen/paddingIn"
         android:layout_marginStart="1.5dp"
-        android:layout_marginEnd="2dp"
+        android:layout_marginEnd="4dp"
         android:layout_marginBottom="0dp"
         android:background="@drawable/bg_button_reminder"
         />
