@@ -3,9 +3,10 @@ package com.dotpad2.repository
 import androidx.lifecycle.Transformations
 import com.dotpad2.model.Dot
 import com.dotpad2.repository.local.DotsDao
+import com.dotpad2.repository.local.LegacyDotsDao
 import com.dotpad2.repository.local.entities.DotDto
 
-class Repository(private val dotsDao: DotsDao) {
+class Repository(private val dotsDao: DotsDao, private val legacyDotsDao: LegacyDotsDao) {
 
     fun fetchActive() =
         Transformations.map(dotsDao.fetchActive(), { mapDotDtosToDots(it) })
@@ -33,6 +34,10 @@ class Repository(private val dotsDao: DotsDao) {
     fun fetchSizeStatistics() = dotsDao.sizeStatistics()
 
     fun fetchColorStatistics() = dotsDao.colorStatistics()
+
+    fun addAllDtos(dotDtos: List<DotDto>) {
+        dotsDao.addAll(dotDtos)
+    }
 
     private fun mapDotDtosToDots(dotDtos: List<DotDto>) =
         dotDtos.map { dotDto -> Mappers.dtoDtoToDot(dotDto) }

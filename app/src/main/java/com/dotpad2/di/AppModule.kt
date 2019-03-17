@@ -6,6 +6,7 @@ import com.dotpad2.ui.dot.DotReminder
 import com.dotpad2.repository.LocalPreferences
 import com.dotpad2.repository.Repository
 import com.dotpad2.repository.local.AppDatabase
+import com.dotpad2.repository.local.LegacyAppDatabase
 import com.dotpad2.utils.PermissionsHelper
 import dagger.Module
 import dagger.Provides
@@ -32,6 +33,6 @@ class AppModule(val application: DotPadApplication) {
             = DotReminder(context, localPreferences)
 
     @Provides
-    fun provideRepository(appDatabase: AppDatabase): Repository =
-        Repository(appDatabase.getDotsDao())
+    fun provideRepository(appDatabase: AppDatabase, legacyAppDatabase: LegacyAppDatabase): Repository =
+        Repository(appDatabase.getDotsDao(), legacyAppDatabase.getLegacyDotsDao())
 }

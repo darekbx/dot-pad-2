@@ -12,6 +12,9 @@ import com.dotpad2.repository.local.entities.DotDto
 interface DotsDao {
 
     @Insert
+    fun addAll(dotDtos: List<DotDto>)
+
+    @Insert
     fun add(dotDto: DotDto): Long
 
     @Query("SELECT * FROM dots WHERE id = :dotId")

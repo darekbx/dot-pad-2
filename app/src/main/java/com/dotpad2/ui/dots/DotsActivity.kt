@@ -21,6 +21,7 @@ import com.dotpad2.ui.dot.DotReminder
 import com.dotpad2.ui.dot.setDialogArguments
 import com.dotpad2.ui.dots.list.DotsListFragment
 import com.dotpad2.repository.LocalPreferences
+import com.dotpad2.repository.local.LegacyAppDatabase
 import com.dotpad2.ui.statistics.StatisticsActivity
 import com.dotpad2.utils.PermissionsHelper
 import com.dotpad2.viewmodels.DotViewModel
@@ -38,6 +39,9 @@ class DotsActivity : AppCompatActivity() {
     companion object {
         val REQUEST_CODE_EMAIL = 2000
     }
+
+    @Inject
+    lateinit var legacyAppDatabase: LegacyAppDatabase
 
     @Inject
     lateinit var permissionsHelper: PermissionsHelper
@@ -67,6 +71,16 @@ class DotsActivity : AppCompatActivity() {
 
         addDotListFragment()
         handleEmailAddress()
+
+        //importLegacyDots()
+    }
+
+    private fun importLegacyDots() {
+        legacyAppDatabase.getLegacyDotsDao().fetchAll(0).observe(this, Observer {
+            GlobalScope.launch(Dispatchers.Main) {
+                dotViewModel.addAllDtos(it)
+            }
+        })
     }
 
     override fun onResume() {
