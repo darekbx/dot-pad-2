@@ -100,7 +100,7 @@ class DotsActivity : AppCompatActivity() {
     private fun notifyDotsCount() {
         sendBroadcast(Intent().apply {
             action = "com.dotpad2.refresh"
-            putExtra("dotsCount", dotAdapter.count)
+            putExtra("dotsCount", dotAdapter.activeCount)
             component = ComponentName("com.klauncher", "com.klauncher.DotsReceiver")
         })
     }
