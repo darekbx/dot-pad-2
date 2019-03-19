@@ -1,6 +1,7 @@
 package com.dotpad2.ui.dots
 
 import android.accounts.AccountManager
+import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.DataSetObserver
@@ -86,6 +87,22 @@ class DotsActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         handlePermissions()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        notifyDotsCount()
+    }
+
+    /**
+     * Notyfy dots count to the KLauncher
+     */
+    private fun notifyDotsCount() {
+        sendBroadcast(Intent().apply {
+            action = "com.dotpad2.refresh"
+            putExtra("dotsCount", dotAdapter.count)
+            component = ComponentName("com.klauncher", "com.klauncher.DotsReceiver")
+        })
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

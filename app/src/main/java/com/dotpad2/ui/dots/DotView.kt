@@ -5,7 +5,6 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 import com.dotpad2.utils.TimeUtils
-import android.util.Log
 import android.view.MotionEvent
 import com.dotpad2.R
 import java.util.*
