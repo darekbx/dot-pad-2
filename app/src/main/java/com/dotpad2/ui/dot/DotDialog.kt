@@ -86,11 +86,22 @@ class DotDialog : AppCompatDialogFragment() {
         handleClickEvents()
     }
 
+    private fun focusTheNote() {
+        with(dot_note) {
+            requestFocus()
+            val length = text.length
+            if (length > 0) {
+                setSelection(length)
+            }
+        }
+    }
+
     private fun displayDotIfExists() {
         getDotId()?.let { dotId ->
             dotViewModel.loadDot(dotId).observe(this@DotDialog, Observer { dot ->
                 loadedDot = dot
                 udpateViews(dot)
+                focusTheNote()
                 prepareResetButton()
             })
         }
@@ -270,7 +281,7 @@ class DotDialog : AppCompatDialogFragment() {
             getColor(R.color.dotBlue),
             getColor(R.color.dotPurple),
             getColor(R.color.dotOrange),
-            getColor(R.color.dotYellowrange)
+            getColor(R.color.dotYellow)
         )
     }
 

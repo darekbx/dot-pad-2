@@ -12,5 +12,12 @@
     <color name="dotBlue">#42a5f5</color>
     <color name="dotPurple">#7e57c2</color>
     <color name="dotOrange">#8d6e63</color>
-    <color name="dotYellowrange">#f9a825</color>
+    <color name="dotYellow">#f9a825</color>
+
+    <color name="legacyDotRed">#F06950</color>
+    <color name="legacyDotGreen">#41B49B</color>
+    <color name="legacyDotBlue">#69AAFF</color>
+    <color name="legacyDotViolet">#73649B</color>
+    <color name="legacyDotPurple">#E18273</color>
+    <color name="legacyDotYellow">#FFC346</color>
 </resources>
