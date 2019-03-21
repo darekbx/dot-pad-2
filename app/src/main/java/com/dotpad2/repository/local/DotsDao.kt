@@ -37,4 +37,7 @@ interface DotsDao {
 
     @Update
     fun update(dotDto: DotDto)
+
+    @Query("UPDATE dots SET color = :newColor WHERE color = :oldColor")
+    fun updateColor(newColor: Int, oldColor: Int) : Int
 }

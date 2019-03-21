@@ -45,4 +45,10 @@ class DotViewModel @Inject constructor(private val repository: Repository) : Vie
             }
         }.await()
     }
+
+    suspend fun updateLegacyColors() {
+        GlobalScope.async {
+            repository.updateLegacyColors()
+        }.await()
+    }
 }

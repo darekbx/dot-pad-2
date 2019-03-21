@@ -8,7 +8,8 @@ import com.dotpad2.repository.local.entities.DotDto
 @Dao
 interface LegacyDotsDao {
 
-    @Query("""SELECT
+    @Query(
+        """SELECT
                _id AS id,
                text,
                size,
@@ -22,6 +23,7 @@ interface LegacyDotsDao {
                event_id AS calendar_event_id,
                reminder_id AS calendar_reminder_id
              FROM dots
-             WHERE date > :startDate""")
+             WHERE date > :startDate"""
+    )
     fun fetchAll(startDate: Long): LiveData<List<DotDto>>
 }

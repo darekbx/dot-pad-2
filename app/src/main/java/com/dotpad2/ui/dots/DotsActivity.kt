@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.dotpad2.DotPadApplication
 import com.dotpad2.R
 import com.dotpad2.model.Dot
+import com.dotpad2.repository.ColorMapper
 import com.dotpad2.ui.dot.DotDialog
 import com.dotpad2.ui.dot.DotReminder
 import com.dotpad2.ui.dot.setDialogArguments
@@ -74,6 +75,13 @@ class DotsActivity : AppCompatActivity() {
         handleEmailAddress()
 
         //importLegacyDots()
+        //updateLegacyColors()
+    }
+
+    private fun updateLegacyColors() {
+        GlobalScope.launch(Dispatchers.Main) {
+            dotViewModel.updateLegacyColors()
+        }
     }
 
     private fun importLegacyDots() {

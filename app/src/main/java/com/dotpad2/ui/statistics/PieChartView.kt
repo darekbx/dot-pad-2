@@ -44,25 +44,11 @@ class PieChartView(context: Context, attrs: AttributeSet) : BaseChartView(contex
             val arcTo = it.first * 3.6F
 
             canvas.drawArc(chartArea, angleOffset, arcTo, true, chartPaint)
+            canvas.drawArc(chartArea, angleOffset, arcTo, true, borderPaint)
 
             angleOffset += arcTo
             angles.add(arcTo)
         }
-
-        drawPartLines(canvas, angles)
-    }
-
-    private fun drawPartLines(canvas: Canvas, angles: MutableList<Float>) {
-        canvas.save()
-
-        angles.forEach { angle ->
-            val x = chartArea.centerX()
-            val y = chartArea.centerY()
-            canvas.rotate(angle + 180, x, y)
-            canvas.drawLine(x, y, 0F, y, borderPaint)
-        }
-
-        canvas.restore()
     }
 
     private fun calculateChartRectange(): RectF {

@@ -2,6 +2,7 @@ package com.dotpad2.di
 
 import android.content.Context
 import com.dotpad2.DotPadApplication
+import com.dotpad2.repository.ColorMapper
 import com.dotpad2.ui.dot.DotReminder
 import com.dotpad2.repository.LocalPreferences
 import com.dotpad2.repository.Repository
@@ -33,6 +34,9 @@ class AppModule(val application: DotPadApplication) {
             = DotReminder(context, localPreferences)
 
     @Provides
-    fun provideRepository(appDatabase: AppDatabase, legacyAppDatabase: LegacyAppDatabase): Repository =
-        Repository(appDatabase.getDotsDao(), legacyAppDatabase.getLegacyDotsDao())
+    fun colorMapper(context: Context) = ColorMapper(context.resources)
+
+    @Provides
+    fun provideRepository(appDatabase: AppDatabase, legacyAppDatabase: LegacyAppDatabase, colorMapper: ColorMapper): Repository =
+        Repository(appDatabase.getDotsDao(), legacyAppDatabase.getLegacyDotsDao(), colorMapper)
 }
