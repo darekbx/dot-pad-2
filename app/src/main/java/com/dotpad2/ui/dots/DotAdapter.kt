@@ -25,4 +25,11 @@ class DotAdapter(context: Context) : ArrayAdapter<Dot>(context, R.layout.adapter
     }
 
     val layoutInflater by lazy { LayoutInflater.from(context) }
+
+    val activeCount: Int
+        get() {
+            return (0..(count - 1)).count {
+                !getItem(it).isSticked
+            }
+        }
 }
