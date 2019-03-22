@@ -9,8 +9,10 @@ import javax.inject.Inject
 
 class StatisticsViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
+
     fun sizes() = mapToPercents(repository.fetchSizeStatistics())
     fun colors() = mapToPercents(repository.fetchColorStatistics())
+    fun count() = repository.fetchCountStatistics()
 
     private fun mapToPercents(values: LiveData<List<StatisticsValue>>) =
         Transformations.map(values, { statisticValues ->

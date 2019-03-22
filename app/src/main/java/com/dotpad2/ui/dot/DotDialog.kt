@@ -3,6 +3,7 @@ package com.dotpad2.ui.dot
 import android.content.Context
 import android.graphics.Point
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -112,7 +113,7 @@ class DotDialog : AppCompatDialogFragment() {
         dot_is_sticked.isChecked = dot.isSticked
         color_selector.selectedColor = dot.color
         size_selector.selectedSize = dot.size
-        dot.reminder?.run {
+        dot.reminder?.takeIf { it > 0 }?.run {
             dot_reminder.text = TimeUtils.formattedDate(this)
         }
     }

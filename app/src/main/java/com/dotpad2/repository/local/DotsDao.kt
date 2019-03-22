@@ -29,6 +29,9 @@ interface DotsDao {
     @Query("UPDATE dots SET position_x = :x, position_y = :y WHERE id = :dotId")
     fun updateDotPosition(dotId: Long?, x: Int, y: Int)
 
+    @Query("SELECT COUNT(id) FROM dots")
+    fun countStatistics(): LiveData<Int>
+
     @Query("SELECT COUNT(size) AS occurrences, size AS value FROM dots GROUP BY size")
     fun sizeStatistics(): LiveData<List<StatisticsValue>>
 

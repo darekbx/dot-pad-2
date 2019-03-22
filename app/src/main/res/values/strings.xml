@@ -6,6 +6,7 @@
     <string name="delete_reminder">Delete reminder?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="overall_count">Overall count: &lt;b>%d&lt;/b></string>
 
     <string name="title_archive">Archive</string>
     <string name="title_statistics">Statistics</string>

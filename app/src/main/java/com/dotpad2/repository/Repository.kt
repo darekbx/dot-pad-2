@@ -39,6 +39,8 @@ class Repository(
 
     fun fetchColorStatistics() = dotsDao.colorStatistics()
 
+    fun fetchCountStatistics() = dotsDao.countStatistics()
+
     fun addAllDtos(dotDtos: List<DotDto>) {
         dotsDao.addAll(dotDtos)
     }

@@ -1,6 +1,7 @@
 package com.dotpad2.ui.statistics
 
 import android.os.Bundle
+import android.text.Html
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -24,6 +25,9 @@ class StatisticsActivity: AppCompatActivity() {
 
         statisticsViewModel = ViewModelProviders.of(this, viewModelFactory)[StatisticsViewModel::class.java]
         with(statisticsViewModel) {
+            count().observe(this@StatisticsActivity, Observer {
+                overall_count.text = Html.fromHtml(getString(R.string.overall_count, it))
+            })
             sizes().observe(this@StatisticsActivity, Observer { size_chart.data = it })
             colors().observe(this@StatisticsActivity, Observer { color_chart.data = it })
         }
