@@ -26,6 +26,9 @@ interface DotsDao {
     @Query("SELECT * FROM dots ORDER BY created_date DESC LIMIT :limit OFFSET :offset")
     fun fetchAll(limit: Int, offset: Int): LiveData<List<DotDto>>
 
+    @Query("SELECT * FROM dots WHERE text LIKE :query ORDER BY created_date")
+    fun search(query: String): LiveData<List<DotDto>>
+
     @Query("UPDATE dots SET position_x = :x, position_y = :y WHERE id = :dotId")
     fun updateDotPosition(dotId: Long?, x: Int, y: Int)
 

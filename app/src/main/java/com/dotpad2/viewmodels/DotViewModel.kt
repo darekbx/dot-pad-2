@@ -14,6 +14,8 @@ class DotViewModel @Inject constructor(private val repository: Repository) : Vie
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
+    fun search(query: String) = repository.search("%$query%")
+
     fun allDots(limit: Int, offset: Int) = repository.fetchAll(limit, offset)
 
     fun activeDots() = repository.fetchActive()

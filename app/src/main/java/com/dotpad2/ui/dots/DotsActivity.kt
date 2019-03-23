@@ -17,13 +17,13 @@ import androidx.lifecycle.ViewModelProviders
 import com.dotpad2.DotPadApplication
 import com.dotpad2.R
 import com.dotpad2.model.Dot
-import com.dotpad2.repository.ColorMapper
 import com.dotpad2.ui.dot.DotDialog
 import com.dotpad2.ui.dot.DotReminder
 import com.dotpad2.ui.dot.setDialogArguments
 import com.dotpad2.ui.dots.list.DotsListFragment
 import com.dotpad2.repository.LocalPreferences
 import com.dotpad2.repository.local.LegacyAppDatabase
+import com.dotpad2.ui.archive.ArchiveActivity
 import com.dotpad2.ui.statistics.StatisticsActivity
 import com.dotpad2.utils.PermissionsHelper
 import com.dotpad2.viewmodels.DotViewModel
@@ -199,8 +199,9 @@ class DotsActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         item?.let {
-            when(item.itemId) {
-                R.id.navigation_statistics -> startActivity(Intent(this,  StatisticsActivity::class.java))
+            when (item.itemId) {
+                R.id.navigation_statistics -> startActivity(Intent(this, StatisticsActivity::class.java))
+                R.id.navigation_history -> startActivity(Intent(this, ArchiveActivity::class.java))
             }
         }
         return super.onOptionsItemSelected(item)

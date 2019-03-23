@@ -3,10 +3,10 @@ package com.dotpad2.ui.dot
 import android.content.Context
 import android.graphics.Point
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.lifecycle.Observer
@@ -94,7 +94,13 @@ class DotDialog : AppCompatDialogFragment() {
             if (length > 0) {
                 setSelection(length)
             }
+            showKeyboard()
         }
+    }
+
+    fun showKeyboard() {
+        val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+        inputMethodManager?.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
     }
 
     private fun displayDotIfExists() {
@@ -105,7 +111,7 @@ class DotDialog : AppCompatDialogFragment() {
                 focusTheNote()
                 prepareResetButton()
             })
-        }
+        } ?: showKeyboard()
     }
 
     private fun udpateViews(dot: Dot) {

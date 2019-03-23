@@ -1,6 +1,5 @@
 package com.dotpad2.repository
 
-import android.util.Log
 import androidx.lifecycle.Transformations
 import com.dotpad2.model.Dot
 import com.dotpad2.repository.local.DotsDao
@@ -11,6 +10,9 @@ class Repository(
     private val dotsDao: DotsDao,
     private val legacyDotsDao: LegacyDotsDao,
     private val colorMapper: ColorMapper) {
+
+    fun search(query: String) =
+        Transformations.map(dotsDao.search(query), { mapDotDtosToDots(it) })
 
     fun fetchActive() =
         Transformations.map(dotsDao.fetchActive(), { mapDotDtosToDots(it) })
