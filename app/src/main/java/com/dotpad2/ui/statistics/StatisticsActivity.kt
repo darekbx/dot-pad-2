@@ -28,7 +28,7 @@ class StatisticsActivity: AppCompatActivity() {
             count().observe(this@StatisticsActivity, Observer {
                 overall_count.text = Html.fromHtml(getString(R.string.overall_count, it))
             })
-            sizes().observe(this@StatisticsActivity, Observer { size_chart.data = it })
+            sizes().observe(this@StatisticsActivity, Observer { })
             colors().observe(this@StatisticsActivity, Observer { color_chart.data = it })
         }
     }
