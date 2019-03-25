@@ -129,7 +129,7 @@ class DotBoardView(context: Context, attrs: AttributeSet?)
     }
 
     private fun openDot(dot: Dot) {
-        if (isDragDropEnabled) {
+        if (isDragDropEnabled || dot.isArchived) {
             return
         }
         openDotCallback?.invoke(dot)
