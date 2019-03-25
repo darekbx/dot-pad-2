@@ -16,7 +16,7 @@ class DotViewModel @Inject constructor(private val repository: Repository) : Vie
 
     fun search(query: String) = repository.search("%$query%")
 
-    fun allDots(limit: Int, offset: Int) = repository.fetchAll(limit, offset)
+    fun archivedDots(limit: Int, offset: Int) = repository.fetchArchive(limit, offset)
 
     fun activeDots() = repository.fetchActive()
 

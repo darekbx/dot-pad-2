@@ -111,7 +111,10 @@ class DotDialog : AppCompatDialogFragment() {
                 focusTheNote()
                 prepareResetButton()
             })
-        } ?: showKeyboard()
+        } ?: fun () {
+            showKeyboard()
+            dot_note.requestFocus()
+        }.invoke()
     }
 
     private fun udpateViews(dot: Dot) {

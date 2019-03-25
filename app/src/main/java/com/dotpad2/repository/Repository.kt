@@ -17,8 +17,8 @@ class Repository(
     fun fetchActive() =
         Transformations.map(dotsDao.fetchActive(), { mapDotDtosToDots(it) })
 
-    fun fetchAll(limit: Int, offset: Int) =
-        Transformations.map(dotsDao.fetchAll(limit, offset), { mapDotDtosToDots(it) })
+    fun fetchArchive(limit: Int, offset: Int) =
+        Transformations.map(dotsDao.fetchArchive(limit, offset), { mapDotDtosToDots(it) })
 
     fun getDot(dotId: Long) =
         Transformations.map(dotsDao.fetchDot(dotId), { Mappers.dtoDtoToDot(it) })

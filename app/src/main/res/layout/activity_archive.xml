@@ -16,31 +16,31 @@
     />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/archive_list"
-        android:layout_height="0dp"
-        android:layout_width="0dp"
-        app:layout_constraintTop_toBottomOf="@id/query_input"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/archive_list"
+            android:layout_height="0dp"
+            android:layout_width="0dp"
+            app:layout_constraintTop_toBottomOf="@id/query_input"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
     />
 
     <FrameLayout
-        android:id="@+id/archive_progress"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:background="#A000"
-        android:visibility="gone"
+            android:id="@+id/archive_progress"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="#A000"
+            android:visibility="gone"
     >
         <ProgressBar
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_gravity="center"
-            android:indeterminate="true"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:indeterminate="true"
         />
     </FrameLayout>
 
