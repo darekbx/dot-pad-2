@@ -34,7 +34,7 @@ class DotsListFragment : Fragment() {
 
         dotViewModel.activeDots().observe(this, Observer { dots ->
             adapter.clear()
-            adapter.addAll(dots)
+            adapter.addAll(dots.reversed())
         })
     }
 
