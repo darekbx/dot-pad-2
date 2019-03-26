@@ -3,6 +3,7 @@ package com.dotpad2.ui.dot
 import android.content.Context
 import android.graphics.Point
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -118,7 +119,9 @@ class DotDialog : AppCompatDialogFragment() {
     }
 
     private fun udpateViews(dot: Dot) {
-        dot_note.setText(dot.text)
+        if (TextUtils.isEmpty(dot_note.text.toString())) {
+            dot_note.setText(dot.text)
+        }
         dot_is_sticked.isChecked = dot.isSticked
         color_selector.selectedColor = dot.color
         size_selector.selectedSize = dot.size

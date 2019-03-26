@@ -14,6 +14,12 @@ class DotViewModel @Inject constructor(private val repository: Repository) : Vie
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
+    fun deleteDot(dot: Dot) {
+        GlobalScope.launch {
+            dot.id?.let { repository.deleteDot(it) }
+        }
+    }
+
     fun search(query: String) = repository.search("%$query%")
 
     fun archivedDots(limit: Int, offset: Int) = repository.fetchArchive(limit, offset)

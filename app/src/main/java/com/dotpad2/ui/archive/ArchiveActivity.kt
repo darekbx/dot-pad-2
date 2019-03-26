@@ -2,6 +2,7 @@ package com.dotpad2.ui.archive
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
@@ -14,6 +15,9 @@ import com.dotpad2.R
 import com.dotpad2.model.Dot
 import com.dotpad2.viewmodels.DotViewModel
 import kotlinx.android.synthetic.main.activity_archive.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ArchiveActivity : AppCompatActivity() {
@@ -45,13 +49,17 @@ class ArchiveActivity : AppCompatActivity() {
     private fun initViewModel() {
         dotViewModel = ViewModelProviders.of(this, viewModelFactory)[DotViewModel::class.java]
         dotViewModel.archivedDots(Int.MAX_VALUE, 0).observe(this, Observer { dots ->
-            this.dots.addAll(dots)
-            fillDots()
+            if (this.dots.size == 0) {
+                this.dots.addAll(dots)
+                fillDots()
+            }else {
+                adapter?.replaceAll(dots)
+            }
         })
     }
 
     private fun fillDots() {
-        adapter = ArchiveAdapter().apply { addAll(dots) }
+        adapter = ArchiveAdapter(onItemClick).apply { addAll(dots) }
         archive_list.adapter = adapter
         archive_progress.visibility = View.GONE
     }
@@ -82,5 +90,29 @@ class ArchiveActivity : AppCompatActivity() {
                 return true
             }
         })
+    }
+
+    private val onItemClick = { dot: Dot? ->
+        dot?.let { showOptionsDialog(dot) }
+        Unit
+    }
+
+    private fun showOptionsDialog(dot: Dot) {
+        AlertDialog.Builder(this)
+            .setMessage(getString(R.string.options_title, dot.shortText(10)))
+            .setPositiveButton(R.string.option_restore, { a, b -> restoreDot(dot) })
+            .setNegativeButton(R.string.option_delete, { a, b -> deleteDot(dot) })
+            .show()
+    }
+
+    private fun restoreDot(dot: Dot) {
+        dot.isArchived = false
+        GlobalScope.launch(Dispatchers.Main) {
+            dotViewModel.saveDot(dot)
+        }
+    }
+
+    private fun deleteDot(dot: Dot) {
+        dotViewModel.deleteDot(dot)
     }
 }

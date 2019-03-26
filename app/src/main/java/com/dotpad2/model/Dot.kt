@@ -26,6 +26,14 @@ class Dot(
         calendarReminderId = null
     }
 
+    fun shortText(limit: Int) : String {
+        val length = text.length
+        return when (limit >= length) {
+            true -> text
+            else -> text.substring(0, limit) + "..."
+        }
+    }
+
     val hasReminder: Boolean
         get() = reminder != null
 }

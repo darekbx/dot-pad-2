@@ -1,10 +1,7 @@
 package com.dotpad2.repository.local
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import com.dotpad2.model.StatisticsValue
 import com.dotpad2.repository.local.entities.DotDto
 
@@ -46,4 +43,7 @@ interface DotsDao {
 
     @Query("UPDATE dots SET color = :newColor WHERE color = :oldColor")
     fun updateColor(newColor: Int, oldColor: Int) : Int
+
+    @Query("DELETE FROM dots WHERE id = :dotId")
+    fun deleteDot(dotId: Long)
 }

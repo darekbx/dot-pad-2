@@ -18,4 +18,8 @@
     <string name="dot_is_sticked">Sticked</string>
     <string name="dot_deleted_message">Deleted: %s</string>
     <string name="dot_deleted_undo">Undo</string>
+
+    <string name="options_title">Select action for the dot \"%s\"</string>
+    <string name="option_delete">Delete permanently</string>
+    <string name="option_restore">Restore</string>
 </resources>

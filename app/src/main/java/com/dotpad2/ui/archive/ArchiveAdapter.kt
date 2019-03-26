@@ -7,7 +7,8 @@ import androidx.recyclerview.widget.SortedList
 import com.dotpad2.databinding.AdapterArchiveBinding
 import com.dotpad2.model.Dot
 
-class ArchiveAdapter() : RecyclerView.Adapter<ArchiveAdapter.ArchiveViewHolder>() {
+class ArchiveAdapter(val onLongPress: (dot: Dot?) -> Unit)
+    : RecyclerView.Adapter<ArchiveAdapter.ArchiveViewHolder>() {
 
     private val sortedList = SortedList<Dot>(Dot::class.java, object : SortedList.Callback<Dot>() {
 
@@ -66,7 +67,7 @@ class ArchiveAdapter() : RecyclerView.Adapter<ArchiveAdapter.ArchiveViewHolder>(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArchiveViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = AdapterArchiveBinding.inflate(inflater, parent, false)
-        return ArchiveViewHolder(binding)
+        return ArchiveViewHolder(binding, onLongPress)
     }
 
     override fun onBindViewHolder(holder: ArchiveViewHolder, position: Int) {
@@ -75,7 +76,12 @@ class ArchiveAdapter() : RecyclerView.Adapter<ArchiveAdapter.ArchiveViewHolder>(
 
     override fun getItemCount() = sortedList.size()
 
-    class ArchiveViewHolder(val binding: AdapterArchiveBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ArchiveViewHolder(val binding: AdapterArchiveBinding, val onLongPress: (dot: Dot?) -> Unit)
+        : RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.root.setOnClickListener { onLongPress(binding.dot) }
+        }
 
         fun bind(dot: Dot) {
             binding.dot = dot

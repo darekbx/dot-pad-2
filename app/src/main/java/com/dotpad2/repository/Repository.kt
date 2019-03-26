@@ -11,6 +11,10 @@ class Repository(
     private val legacyDotsDao: LegacyDotsDao,
     private val colorMapper: ColorMapper) {
 
+    fun deleteDot(dotId: Long) {
+        dotsDao.deleteDot(dotId)
+    }
+
     fun search(query: String) =
         Transformations.map(dotsDao.search(query), { mapDotDtosToDots(it) })
 
