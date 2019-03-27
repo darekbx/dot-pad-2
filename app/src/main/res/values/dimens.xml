@@ -3,7 +3,7 @@
     <dimen name="rightDrawerSize">220dp</dimen>
     <dimen name="paddingIn">8dp</dimen>
     <dimen name="paddingOut">16dp</dimen>
-    <dimen name="areaDay">160dp</dimen>
-    <dimen name="areaWeek">300dp</dimen>
-    <dimen name="areaYear">440dp</dimen>
+    <dimen name="areaDay">220dp</dimen>
+    <dimen name="areaWeek">370dp</dimen>
+    <dimen name="areaYear">540dp</dimen>
 </resources>

@@ -121,10 +121,10 @@ class DotDialog : AppCompatDialogFragment() {
     private fun udpateViews(dot: Dot) {
         if (TextUtils.isEmpty(dot_note.text.toString())) {
             dot_note.setText(dot.text)
+            dot_is_sticked.isChecked = dot.isSticked
+            color_selector.selectedColor = dot.color
+            size_selector.selectedSize = dot.size
         }
-        dot_is_sticked.isChecked = dot.isSticked
-        color_selector.selectedColor = dot.color
-        size_selector.selectedSize = dot.size
         dot.reminder?.takeIf { it > 0 }?.run {
             dot_reminder.text = TimeUtils.formattedDate(this)
         }
