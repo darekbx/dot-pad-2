@@ -26,7 +26,7 @@ class DotsListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity?.application as DotPadApplication)?.appComponent.inject(this)
+        (activity?.application as DotPadApplication?)?.appComponent?.inject(this)
         dotViewModel = ViewModelProviders.of(this, viewModelFactory)[DotViewModel::class.java]
 
         val adapter = DotListAdapter(view.context)

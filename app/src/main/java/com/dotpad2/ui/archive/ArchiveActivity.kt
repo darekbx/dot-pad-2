@@ -100,8 +100,8 @@ class ArchiveActivity : AppCompatActivity() {
     private fun showOptionsDialog(dot: Dot) {
         AlertDialog.Builder(this)
             .setMessage(getString(R.string.options_title, dot.shortText(10)))
-            .setPositiveButton(R.string.option_restore, { a, b -> restoreDot(dot) })
-            .setNegativeButton(R.string.option_delete, { a, b -> deleteDot(dot) })
+            .setPositiveButton(R.string.option_restore, { _, _ -> restoreDot(dot) })
+            .setNegativeButton(R.string.option_delete, { _, _ -> deleteDot(dot) })
             .show()
     }
 

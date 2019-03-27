@@ -9,7 +9,7 @@ object Mappers {
     fun dtoDtoToDot(dotDto: DotDto) =
         with(dotDto) {
             Dot(
-                id ?: null,
+                id,
                 text,
                 size,
                 color,

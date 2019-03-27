@@ -52,7 +52,7 @@ class ColorSelectorView(context: Context, attrs: AttributeSet?)
     }
 
     var selectedColor: Int?
-        get() = adapter.selectedItem()?.color ?: null
+        get() = adapter.selectedItem()?.color
         set(value) {
             value?.let { colorToSet ->
                 selectByColor { it == colorToSet }

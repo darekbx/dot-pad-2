@@ -39,7 +39,7 @@ object TimeUtils {
 
     fun showDatePicker(context: Context, date: (year: Int, month: Int, dayOfMonth: Int) -> Unit) {
         DatePickerDialog(context).apply {
-            setOnDateSetListener({ view, year, month, dayOfMonth -> date(year, month, dayOfMonth) })
+            setOnDateSetListener({ _, year, month, dayOfMonth -> date(year, month, dayOfMonth) })
         }.show()
     }
 
@@ -47,7 +47,7 @@ object TimeUtils {
         val calendar = Calendar.getInstance()
         TimePickerDialog(
             context,
-            { view, hourOfDay, minute -> time(hourOfDay, minute) },
+            { _, hourOfDay, minute -> time(hourOfDay, minute) },
             calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true
         ).show()
     }

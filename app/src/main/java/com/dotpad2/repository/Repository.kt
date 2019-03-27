@@ -53,7 +53,7 @@ class Repository(
 
     fun updateLegacyColors() {
         colorMapper.colorMap.keys.forEach { legacyColor ->
-            val updatedCount = dotsDao.updateColor(colorMapper.colorMap[legacyColor] ?: legacyColor, legacyColor)
+            dotsDao.updateColor(colorMapper.colorMap[legacyColor] ?: legacyColor, legacyColor)
         }
     }
 
