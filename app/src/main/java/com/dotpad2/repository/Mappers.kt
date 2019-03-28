@@ -3,6 +3,7 @@ package com.dotpad2.repository
 import android.graphics.Point
 import com.dotpad2.model.Dot
 import com.dotpad2.repository.local.entities.DotDto
+import com.dotpad2.repository.local.entities.LegacyDotDto
 
 object Mappers {
 
@@ -38,6 +39,24 @@ object Mappers {
                 reminder,
                 calendarEventId,
                 calendarReminderId
+            )
+        }
+
+    fun dotDtoToLegacyDot(dotDto: DotDto) =
+        with(dotDto) {
+            LegacyDotDto(
+                null,
+                text,
+                color,
+                size,
+                positionX,
+                positionY,
+                createdDate,
+                isArchived,
+                reminder,
+                calendarEventId,
+                calendarReminderId,
+                isSticked
             )
         }
 }

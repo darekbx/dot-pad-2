@@ -2,8 +2,10 @@ package com.dotpad2.repository.local
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.Query
 import com.dotpad2.repository.local.entities.DotDto
+import com.dotpad2.repository.local.entities.LegacyDotDto
 
 @Dao
 interface LegacyDotsDao {
@@ -26,4 +28,7 @@ interface LegacyDotsDao {
              WHERE date > :startDate"""
     )
     fun fetchAll(startDate: Long): LiveData<List<DotDto>>
+
+    @Insert
+    fun addAll(dots: List<LegacyDotDto>)
 }
