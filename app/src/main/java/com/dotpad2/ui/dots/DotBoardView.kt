@@ -143,7 +143,7 @@ class DotBoardView(context: Context, attrs: AttributeSet?)
     }
 
     private fun notifyDragDropEnabled() {
-        childLoop { dot, dotView -> dotView.isDragDropEnabled = isDragDropEnabled }
+        childLoop { _, dotView -> dotView.isDragDropEnabled = isDragDropEnabled }
     }
 
     private fun updateDotsPositions() {

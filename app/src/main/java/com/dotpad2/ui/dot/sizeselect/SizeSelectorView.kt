@@ -59,7 +59,7 @@ class SizeSelectorView(context: Context, attrs: AttributeSet?)
     }
 
     var selectedSize: Int?
-        get() = adapter.selectedItem()?.size ?: null
+        get() = adapter.selectedItem()?.size
         set(value) {
             value?.let { sizeToSet ->
                 selectBySize { it == sizeToSet }
@@ -78,7 +78,7 @@ class SizeSelectorView(context: Context, attrs: AttributeSet?)
     }
 
     private fun selectBySize(predictor: ((size: Int) -> Boolean)) {
-        childLoop<SizeView> { index, sizeView ->
+        childLoop<SizeView> { _, sizeView ->
             val size = sizeView.sizeWrapper?.size ?: 0
             sizeView.updateSelected(predictor(size))
         }

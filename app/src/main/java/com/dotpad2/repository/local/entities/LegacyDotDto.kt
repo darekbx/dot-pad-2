@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "dots")
 class LegacyDotDto(
-    @PrimaryKey() @ColumnInfo(name = "_id") var id: Long? = null,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "_id") var id: Long? = null,
     @ColumnInfo(name = "text") var text: String = "",
     @ColumnInfo(name = "color") var color: Int = 0,
     @ColumnInfo(name = "size") var size: Int = 0,

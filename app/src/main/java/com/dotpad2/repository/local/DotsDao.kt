@@ -14,6 +14,9 @@ interface DotsDao {
     @Insert
     fun add(dotDto: DotDto): Long
 
+    @Query("SELECT * FROM dots")
+    fun fetchAll(): LiveData<List<DotDto>>
+
     @Query("SELECT * FROM dots WHERE id = :dotId")
     fun fetchDot(dotId: Long): LiveData<DotDto>
 

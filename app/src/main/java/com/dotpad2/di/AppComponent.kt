@@ -5,6 +5,7 @@ import com.dotpad2.ui.archive.ArchiveActivity
 import com.dotpad2.ui.dot.DotDialog
 import com.dotpad2.ui.dots.DotsActivity
 import com.dotpad2.ui.dots.list.DotsListFragment
+import com.dotpad2.ui.settings.SettingsActivity
 import com.dotpad2.ui.statistics.StatisticsActivity
 import dagger.Component
 import javax.inject.Singleton
@@ -18,4 +19,5 @@ interface AppComponent {
     fun inject(listFragment: DotsListFragment)
     fun inject(statisticsActivity: StatisticsActivity)
     fun inject(archiveActivity: ArchiveActivity)
+    fun inject(settingsActivity: SettingsActivity)
 }

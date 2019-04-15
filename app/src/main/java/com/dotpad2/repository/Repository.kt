@@ -5,6 +5,7 @@ import com.dotpad2.model.Dot
 import com.dotpad2.repository.local.DotsDao
 import com.dotpad2.repository.local.LegacyDotsDao
 import com.dotpad2.repository.local.entities.DotDto
+import com.dotpad2.repository.local.entities.LegacyDotDto
 
 class Repository(
     private val dotsDao: DotsDao,
@@ -53,8 +54,12 @@ class Repository(
 
     fun updateLegacyColors() {
         colorMapper.colorMap.keys.forEach { legacyColor ->
-            val updatedCount = dotsDao.updateColor(colorMapper.colorMap[legacyColor] ?: legacyColor, legacyColor)
+            dotsDao.updateColor(colorMapper.colorMap[legacyColor] ?: legacyColor, legacyColor)
         }
+    }
+
+    fun addAllLegacyDots(legacyDots: List<LegacyDotDto>) {
+        legacyDotsDao.addAll(legacyDots)
     }
 
     private fun mapDotDtosToDots(dotDtos: List<DotDto>) =
