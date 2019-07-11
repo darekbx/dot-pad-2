@@ -9,8 +9,10 @@ import android.graphics.Point
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -71,8 +73,20 @@ class DotsActivity : AppCompatActivity() {
             dotAdapter.addAll(dots)
         })
 
-        addDotListFragment()
         handleEmailAddress()
+
+        drawer_layout.addDrawerListener(object: DrawerLayout.DrawerListener {
+
+            override fun onDrawerStateChanged(newState: Int) { }
+
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) { }
+
+            override fun onDrawerClosed(drawerView: View) { }
+
+            override fun onDrawerOpened(drawerView: View) {
+                addDotListFragment()
+            }
+        })
 
         //importLegacyDots()
         //updateLegacyColors()
