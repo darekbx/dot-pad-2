@@ -197,7 +197,6 @@ class DotsActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.navigation_statistics -> startActivity(Intent(this, StatisticsActivity::class.java))
                 R.id.navigation_history -> startActivity(Intent(this, ArchiveActivity::class.java))
-                R.id.navigation_settings -> startActivity(Intent(this, SettingsActivity::class.java))
             }
         }
         return super.onOptionsItemSelected(item)
