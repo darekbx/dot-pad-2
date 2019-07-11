@@ -26,6 +26,7 @@ import com.dotpad2.ui.dots.list.DotsListFragment
 import com.dotpad2.repository.LocalPreferences
 import com.dotpad2.repository.local.LegacyAppDatabase
 import com.dotpad2.ui.archive.ArchiveActivity
+import com.dotpad2.ui.settings.SettingsActivity
 import com.dotpad2.ui.statistics.StatisticsActivity
 import com.dotpad2.utils.PermissionsHelper
 import com.dotpad2.viewmodels.DotViewModel
@@ -43,9 +44,6 @@ class DotsActivity : AppCompatActivity() {
     companion object {
         val REQUEST_CODE_EMAIL = 2000
     }
-
-    @Inject
-    lateinit var legacyAppDatabase: LegacyAppDatabase
 
     @Inject
     lateinit var permissionsHelper: PermissionsHelper
@@ -85,23 +83,6 @@ class DotsActivity : AppCompatActivity() {
 
             override fun onDrawerOpened(drawerView: View) {
                 addDotListFragment()
-            }
-        })
-
-        //importLegacyDots()
-        //updateLegacyColors()
-    }
-
-    private fun updateLegacyColors() {
-        GlobalScope.launch(Dispatchers.Main) {
-            dotViewModel.updateLegacyColors()
-        }
-    }
-
-    private fun importLegacyDots() {
-        legacyAppDatabase.getLegacyDotsDao().fetchAll(0).observe(this, Observer {
-            GlobalScope.launch(Dispatchers.Main) {
-                dotViewModel.addAllDtos(it)
             }
         })
     }
@@ -216,6 +197,7 @@ class DotsActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.navigation_statistics -> startActivity(Intent(this, StatisticsActivity::class.java))
                 R.id.navigation_history -> startActivity(Intent(this, ArchiveActivity::class.java))
+                R.id.navigation_settings -> startActivity(Intent(this, SettingsActivity::class.java))
             }
         }
         return super.onOptionsItemSelected(item)

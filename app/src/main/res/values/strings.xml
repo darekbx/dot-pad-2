@@ -8,6 +8,9 @@
     <string name="no">No</string>
     <string name="overall_count">Overall count: &lt;b>%d&lt;/b></string>
     <string name="search">Search</string>
+    <string name="import_dots">Import</string>
+    <string name="export_dots">Export</string>
+    <string name="export_success">Exported %d dots.</string>
 
     <string name="title_archive">Archive</string>
     <string name="title_statistics">Statistics</string>

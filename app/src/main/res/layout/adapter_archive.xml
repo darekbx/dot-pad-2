@@ -41,11 +41,9 @@
                 app:layout_constraintTop_toBottomOf="@id/dot_date"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:inputType="textMultiLine"
                 android:paddingStart="@dimen/paddingIn"
                 android:paddingEnd="@dimen/paddingIn"
                 android:paddingBottom="@dimen/paddingIn"
-                android:hint="Test message"
                 android:text="@{dot.text}"
         />
 

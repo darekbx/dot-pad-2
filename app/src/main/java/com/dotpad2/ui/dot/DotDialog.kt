@@ -78,7 +78,7 @@ class DotDialog : AppCompatDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity?.application as DotPadApplication)?.appComponent.inject(this)
+        (activity?.application as DotPadApplication?)?.appComponent?.inject(this)
         dotViewModel = ViewModelProviders.of(this, viewModelFactory)[DotViewModel::class.java]
 
         prepareColorSelect(view)
@@ -143,7 +143,7 @@ class DotDialog : AppCompatDialogFragment() {
                 val x = it.getInt(DOT_POSITION_X)
                 val y = it.getInt(DOT_POSITION_Y)
                 Point(x, y)
-            } ?: null
+            }
 
     private fun handleClickEvents() {
         view?.run {
@@ -200,7 +200,7 @@ class DotDialog : AppCompatDialogFragment() {
         AlertDialog
             .Builder(view.context)
             .setNegativeButton(R.string.no, null)
-            .setPositiveButton(R.string.yes, { dialog, which -> deleteReminder() })
+            .setPositiveButton(R.string.yes, { _, _ -> deleteReminder() })
             .setMessage(R.string.delete_reminder)
             .show()
     }
