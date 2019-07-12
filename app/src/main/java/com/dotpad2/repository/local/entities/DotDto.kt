@@ -2,9 +2,10 @@ package com.dotpad2.repository.local.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "dots")
+@Entity(tableName = "dots", indices = arrayOf(Index(value = ["is_archived"])))
 class DotDto(
     @PrimaryKey(autoGenerate = true) var id: Long? = null,
     @ColumnInfo(name = "text") var text: String = "",
