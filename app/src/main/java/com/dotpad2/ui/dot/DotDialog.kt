@@ -13,16 +13,16 @@ import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import com.dotpad2.R
 import com.dotpad2.DotPadApplication
+import com.dotpad2.R
 import com.dotpad2.model.ColorWrapper
 import com.dotpad2.model.Dot
 import com.dotpad2.model.SizeWrapper
+import com.dotpad2.repository.LocalPreferences
 import com.dotpad2.ui.dot.colorselect.ColorSelectorAdapter
 import com.dotpad2.ui.dot.colorselect.ColorSelectorView
 import com.dotpad2.ui.dot.sizeselect.SizeSelectorAdapter
 import com.dotpad2.ui.dot.sizeselect.SizeSelectorView
-import com.dotpad2.repository.LocalPreferences
 import com.dotpad2.utils.PermissionsHelper
 import com.dotpad2.utils.TimeUtils
 import com.dotpad2.viewmodels.DotViewModel
@@ -32,8 +32,10 @@ import kotlinx.android.synthetic.main.dialog_dot.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 import javax.inject.Inject
+
 
 fun DotDialog.setDialogArguments(position:Point?, dot: Dot?) {
     arguments = Bundle().apply {
@@ -104,13 +106,19 @@ class DotDialog : AppCompatDialogFragment() {
         inputMethodManager?.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
     }
 
+    fun hideKeyboard() {
+        val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+        var view = activity?.currentFocus ?: View(activity)
+        inputMethodManager?.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
     private fun displayDotIfExists() {
         getDotId()?.let { dotId ->
             dotViewModel.loadDot(dotId).observe(this@DotDialog, Observer { dot ->
                 loadedDot = dot
                 udpateViews(dot)
                 focusTheNote()
-                prepareResetButton()
+                prepareExistingDotButtons()
             })
         } ?: fun () {
             showKeyboard()
@@ -152,10 +160,12 @@ class DotDialog : AppCompatDialogFragment() {
         }
     }
 
-    private fun prepareResetButton() {
+    private fun prepareExistingDotButtons() {
         if (loadedDot != null) {
-            reset_button.setOnClickListener { resetClick() }
             reset_button.visibility = View.VISIBLE
+            delete_button.visibility = View.VISIBLE
+            reset_button.setOnClickListener { resetClick() }
+            delete_button.setOnClickListener { deleteClick() }
         }
     }
 
@@ -175,6 +185,21 @@ class DotDialog : AppCompatDialogFragment() {
 
     fun resetClick() {
         resetDotCreatedTime()
+    }
+
+    fun deleteClick() {
+        loadedDot?.let { dot ->
+            dotReminder.removeReminder(dot)
+            dot.isArchived = true
+            dot.resetReminder()
+            GlobalScope.launch(Dispatchers.IO) {
+                dotViewModel.saveDot(dot)
+                withContext(Dispatchers.Main) {
+                    dismiss()
+                    hideKeyboard()
+                }
+            }
+        }
     }
 
     fun reminderClick() {
@@ -235,6 +260,7 @@ class DotDialog : AppCompatDialogFragment() {
                 saveReminder(dot)
                 dotViewModel.saveDot(dot)
                 dismiss()
+                hideKeyboard()
             }
         }
     }
