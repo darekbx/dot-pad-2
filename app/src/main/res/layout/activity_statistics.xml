@@ -19,6 +19,18 @@
         android:textColor="#ccc"
         />
 
+    <TextView
+            android:id="@+id/overall_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Overall count: 1241"
+            android:padding="@dimen/paddingOut"
+            android:textSize="18sp"
+            android:textColor="#ccc"
+            />
+
     <com.dotpad2.ui.statistics.PieChartView
         android:id="@+id/color_chart"
         android:layout_width="0dp"
