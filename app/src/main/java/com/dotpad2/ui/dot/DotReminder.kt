@@ -63,7 +63,7 @@ class DotReminder(val context: Context, val localPreferences: LocalPreferences) 
             CalendarContract.Events.CONTENT_URI,
             eventContentValues
         )
-        return createdEventUri.lastPathSegment.toLong()
+        return createdEventUri!!.lastPathSegment!!.toLong()
     }
 
     private fun prepareReminderValues(eventId: Long): ContentValues {
@@ -81,7 +81,7 @@ class DotReminder(val context: Context, val localPreferences: LocalPreferences) 
             CalendarContract.Reminders.CONTENT_URI,
             reminderContentValues
         )
-        return createdReminderUri.lastPathSegment.toLong()
+        return createdReminderUri!!.lastPathSegment!!.toLong()
     }
 
     private fun fetchCalendarId(): Long? {

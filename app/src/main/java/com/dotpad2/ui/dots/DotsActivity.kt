@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.drawerlayout.widget.DrawerLayout
@@ -24,6 +25,7 @@ import com.dotpad2.ui.dot.DotReminder
 import com.dotpad2.ui.dot.setDialogArguments
 import com.dotpad2.ui.dots.list.DotsListFragment
 import com.dotpad2.repository.LocalPreferences
+import com.dotpad2.repository.local.AppDatabase
 import com.dotpad2.repository.local.LegacyAppDatabase
 import com.dotpad2.ui.archive.ArchiveActivity
 import com.dotpad2.ui.settings.SettingsActivity
@@ -195,8 +197,21 @@ class DotsActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         item?.let {
             when (item.itemId) {
-                R.id.navigation_statistics -> startActivity(Intent(this, StatisticsActivity::class.java))
+                R.id.navigation_statistics -> startActivity(
+                    Intent(
+                        this,
+                        StatisticsActivity::class.java
+                    )
+                )
                 R.id.navigation_history -> startActivity(Intent(this, ArchiveActivity::class.java))
+                R.id.navigation_backup -> {
+                    AppDatabase.makeBackup(this, { path ->
+                        runOnUiThread {
+                            Toast.makeText(this, "Backup created to: $path", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    })
+                }
             }
         }
         return super.onOptionsItemSelected(item)

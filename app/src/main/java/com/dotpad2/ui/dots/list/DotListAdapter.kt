@@ -12,7 +12,7 @@ import com.dotpad2.model.Dot
 
 class DotListAdapter(context: Context) : ArrayAdapter<Dot>(context, R.layout.adapter_list_dot) {
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val binding = when (convertView) {
             null -> DataBindingUtil.inflate(layoutInflater, R.layout.adapter_list_dot, parent, false)
             else -> DataBindingUtil.getBinding<AdapterListDotBinding>(convertView)

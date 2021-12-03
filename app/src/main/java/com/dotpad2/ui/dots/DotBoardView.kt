@@ -104,7 +104,7 @@ class DotBoardView(context: Context, attrs: AttributeSet?)
     }
 
     private fun addDotToLayout(dotIndex: Int) {
-        val dot = adapter.getItem(dotIndex)
+        val dot = adapter.getItem(dotIndex)!!
         val dotView = (adapter.getView(dotIndex, null, this) as DotView).apply {
             dotSize = dot.size
 
@@ -159,7 +159,7 @@ class DotBoardView(context: Context, attrs: AttributeSet?)
     private fun childLoop(callback: (dot: Dot, dotView: DotView) -> Unit) {
         for (dotIndex in 0 until childCount) {
             val child = getChildAt(dotIndex) as DotView
-            val dot = adapter.getItem(dotIndex)
+            val dot = adapter.getItem(dotIndex)!!
             callback(dot, child)
         }
     }
