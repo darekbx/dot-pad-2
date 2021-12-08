@@ -73,14 +73,14 @@ class SizeSelectorView(context: Context, attrs: AttributeSet?)
 
     private fun selectByIndex(predictor: ((index: Int) -> Boolean)) {
         childLoop<SizeView> { index, sizeView ->
-            sizeView.updateSelected(predictor(index))
+            sizeView?.updateSelected(predictor(index))
         }
     }
 
     private fun selectBySize(predictor: ((size: Int) -> Boolean)) {
         childLoop<SizeView> { _, sizeView ->
-            val size = sizeView.sizeWrapper?.size ?: 0
-            sizeView.updateSelected(predictor(size))
+            val size = sizeView?.sizeWrapper?.size ?: 0
+            sizeView?.updateSelected(predictor(size))
         }
     }
 

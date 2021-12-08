@@ -66,14 +66,14 @@ class ColorSelectorView(context: Context, attrs: AttributeSet?)
 
     private fun selectByIndex(predictor: ((index: Int) -> Boolean)) {
         childLoop<ColorView> { index, colorView ->
-            colorView.updateSelected(predictor(index))
+            colorView?.updateSelected(predictor(index))
         }
     }
 
     private fun selectByColor(predictor: ((color: Int) -> Boolean)) {
         childLoop<ColorView> { _, colorView ->
-            val color = colorView.colorWrapper?.color ?: 0
-            colorView.updateSelected(predictor(color))
+            val color = colorView?.colorWrapper?.color ?: 0
+            colorView?.updateSelected(predictor(color))
         }
     }
 
